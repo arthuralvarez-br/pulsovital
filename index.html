@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pulsovital">
+<meta property="og:title" content="Pulsovital · Zoraxx">
+<meta property="og:description" content="60 segundos. Seu estado real, em palavras.">
+<meta property="og:type" content="website">
+<title>Pulsovital · Zoraxx</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #0a0a0b;
+  --bg2:        #111114;
+  --bg3:        #18181c;
+  --amber:      #c8912a;
+  --amber-l:    #e8b84b;
+  --amber-d:    #6a4a18;
+  --text:       #e8e4dc;
+  --text-m:     #8a8578;
+  --text-d:     #4a4840;
+  --border:     #222018;
+  --green:      #5aaa82;
+  --red:        #c05050;
+  --blue:       #4a7ab8;
+  --orange:     #d07840;
+  --gold:       #c8a030;
+  --purple:     #7878b8;
+}
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── NOISE OVERLAY ───────────────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999; opacity: .5;
+}
+
+/* ── APP CONTAINER ───────────────────────────────────────────────────────── */
+#app {
+  height: 100dvh;
+  display: flex; flex-direction: column;
+  max-width: 480px; margin: 0 auto;
+  position: relative; overflow: hidden;
+}
+
+/* ── SCREENS ─────────────────────────────────────────────────────────────── */
+.screen {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s ease;
+  overflow-y: auto; overflow-x: hidden;
+}
+.screen.active { opacity: 1; pointer-events: all; }
+
+/* ── SCREEN: INTRO ───────────────────────────────────────────────────────── */
+#screen-intro {
+  padding: 0 32px 32px;
+  justify-content: space-between;
+}
+.intro-top {
+  padding-top: max(48px, env(safe-area-inset-top));
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+}
+.badge {
+  display: inline-flex; align-items: center;
+  border: 1px solid var(--amber-d);
+  padding: 5px 12px; border-radius: 2px;
+  font-size: 10px; letter-spacing: 4px; color: var(--amber-d);
+  text-transform: uppercase; margin-bottom: 28px;
+  font-family: 'Playfair Display', serif;
+}
+.intro-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(52px, 14vw, 72px);
+  font-weight: 700; line-height: 1.0;
+  color: var(--text); margin-bottom: 20px;
+  animation: fadeUp .8s ease both;
+}
+.intro-line {
+  width: 48px; height: 2px;
+  background: var(--amber); margin-bottom: 24px;
+  animation: fadeUp .8s .1s ease both;
+}
+.intro-sub {
+  font-size: 18px; font-weight: 300;
+  color: var(--text-m); line-height: 1.6;
+  margin-bottom: 24px;
+  animation: fadeUp .8s .2s ease both;
+}
+.intro-desc {
+  font-size: 13px; color: var(--text-d);
+  line-height: 1.7; margin-bottom: 32px;
+  animation: fadeUp .8s .3s ease both;
+}
+.intro-aviso {
+  border-left: 2px solid var(--amber-d);
+  padding-left: 14px;
+  animation: fadeUp .8s .4s ease both;
+}
+.intro-aviso p {
+  font-size: 11px; color: var(--text-d); line-height: 1.6;
+}
+.btn-scan {
+  border: 1.5px solid var(--amber);
+  border-radius: 2px; padding: 20px;
+  text-align: center; cursor: pointer;
+  background: transparent;
+  transition: background .2s, transform .1s;
+  animation: fadeUp .8s .5s ease both;
+  -webkit-appearance: none;
+  width: 100%;
+}
+.btn-scan:active { background: rgba(200,145,42,.08); transform: scale(.98); }
+.btn-scan-main {
+  font-size: 13px; letter-spacing: 4px;
+  color: var(--amber); font-weight: 600;
+  text-transform: uppercase; display: block;
+}
+.btn-scan-sub {
+  font-size: 11px; color: var(--amber-d);
+  margin-top: 5px; letter-spacing: 1px; display: block;
+}
+
+/* ── SCREEN: SCAN ────────────────────────────────────────────────────────── */
+#screen-scan {
+  align-items: center; justify-content: center; gap: 52px;
+  padding: 40px;
+}
+.scan-label {
+  font-size: 11px; letter-spacing: 5px;
+  color: var(--amber-d); text-transform: uppercase;
+}
+.sonar {
+  position: relative; width: 180px; height: 180px;
+  display: flex; align-items: center; justify-content: center;
+}
+.sonar-ring {
+  position: absolute;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  border: 1.5px solid var(--amber);
+  animation: sonar 2.4s ease-out infinite;
+}
+.sonar-ring:nth-child(2) { animation-delay: .8s; }
+.sonar-ring:nth-child(3) { animation-delay: 1.6s; }
+.sonar-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%; background: var(--amber);
+  box-shadow: 0 0 12px var(--amber);
+}
+@keyframes sonar {
+  0%   { transform: scale(.2); opacity: .9; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+.scan-progress-wrap { width: 100%; }
+.scan-progress-track {
+  width: 100%; height: 1px;
+  background: var(--border); border-radius: 1px;
+  overflow: hidden; margin-bottom: 10px;
+}
+.scan-progress-fill {
+  height: 100%; background: var(--amber);
+  width: 0%; transition: width .1s linear;
+}
+.scan-pct {
+  font-size: 11px; letter-spacing: 3px;
+  color: var(--amber-d); text-align: center; display: block;
+}
+.scan-dica {
+  font-size: 12px; color: var(--text-d);
+  letter-spacing: 1px; text-align: center;
+}
+
+/* ── SCREEN: RESULTADO ───────────────────────────────────────────────────── */
+#screen-resultado {
+  padding-bottom: max(40px, env(safe-area-inset-bottom));
+}
+.resultado-inner {
+  padding: 0 28px 40px;
+  padding-top: max(48px, env(safe-area-inset-top));
+  min-height: 100%;
+  display: flex; flex-direction: column;
+}
+.resultado-badge {
+  font-size: 10px; letter-spacing: 4px;
+  color: var(--text-d); text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.resultado-accent { width: 40px; height: 2px; margin-bottom: 16px; }
+.resultado-nome {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px, 11vw, 56px);
+  font-weight: 700; line-height: 1.05;
+  margin-bottom: 8px;
+}
+.resultado-sub {
+  font-size: 11px; letter-spacing: 3px;
+  color: var(--text-d); text-transform: uppercase;
+  margin-bottom: 36px;
+}
+.metricas {
+  display: flex; align-items: center;
+  margin-bottom: 36px; gap: 0;
+}
+.metrica { flex: 1; text-align: center; }
+.metrica-valor {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px; font-weight: 700;
+  display: block; margin-bottom: 3px;
+}
+.metrica-unidade {
+  font-size: 10px; color: var(--text-d);
+  letter-spacing: 2px; display: block;
+}
+.metrica-label {
+  font-size: 9px; color: var(--text-d);
+  letter-spacing: 3px; text-transform: uppercase;
+  display: block; margin-top: 2px;
+}
+.metrica-div {
+  width: 1px; height: 40px; background: var(--border);
+}
+.resultado-divider { height: 1px; margin-bottom: 32px; opacity: .2; }
+.narrativa-autor {
+  font-size: 10px; letter-spacing: 4px;
+  color: var(--text-d); text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.narrativa-texto {
+  font-size: 16px; font-weight: 300;
+  color: var(--text); line-height: 1.75;
+  flex: 1; margin-bottom: 48px;
+}
+.btn-compartilhar {
+  border: 1.5px solid; border-radius: 2px;
+  padding: 18px; text-align: center;
+  cursor: pointer; background: transparent;
+  font-size: 12px; letter-spacing: 4px;
+  font-weight: 600; text-transform: uppercase;
+  transition: background .2s, transform .1s;
+  margin-bottom: 12px; width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-appearance: none;
+}
+.btn-compartilhar:active { transform: scale(.98); }
+.btn-novamente {
+  padding: 16px; text-align: center;
+  cursor: pointer; background: transparent; border: none;
+  font-size: 12px; color: var(--text-d);
+  letter-spacing: 2px; font-family: 'DM Sans', sans-serif;
+  width: 100%; -webkit-appearance: none;
+}
+.rodape {
+  border-top: 1px solid var(--border);
+  padding-top: 24px; margin-top: 16px;
+}
+.rodape-marca {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px; color: var(--text-d);
+  letter-spacing: 2px; margin-bottom: 6px;
+}
+.rodape-aviso {
+  font-size: 10px; color: var(--text-d); line-height: 1.6;
+}
+
+/* ── SCREEN: CARD ────────────────────────────────────────────────────────── */
+#screen-card {
+  align-items: center; justify-content: center;
+  padding: 24px;
+  background: var(--bg);
+}
+.card-wrap {
+  width: 100%; max-width: 380px;
+  aspect-ratio: 1;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,.6);
+}
+.card-bg {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+}
+.card-noise {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; opacity: .5;
+}
+.card-corners .c {
+  position: absolute; width: 20px; height: 20px;
+  border-style: solid; opacity: .4;
+}
+.card-corners .tl { top: 16px; left: 16px; border-width: 2px 0 0 2px; }
+.card-corners .tr { top: 16px; right: 16px; border-width: 2px 2px 0 0; }
+.card-corners .bl { bottom: 16px; left: 16px; border-width: 0 0 2px 2px; }
+.card-corners .br { bottom: 16px; right: 16px; border-width: 0 2px 2px 0; }
+.card-top {}
+.card-label {
+  font-size: 9px; letter-spacing: 4px;
+  color: #4a4840; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.card-accent { width: 32px; height: 1.5px; margin-bottom: 12px; }
+.card-nome {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 8vw, 42px);
+  font-weight: 700; line-height: 1.1;
+  margin-bottom: 6px;
+}
+.card-sub {
+  font-size: 9px; letter-spacing: 2.5px;
+  color: #4a4840; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.card-narrativa {
+  font-size: clamp(10px, 2.5vw, 13px);
+  font-weight: 300; line-height: 1.65;
+  color: #c0bcb4;
+}
+.card-bottom {}
+.card-metricas {
+  display: flex; gap: 24px; margin-bottom: 16px;
+}
+.card-m-valor {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700; display: block;
+}
+.card-m-label {
+  font-size: 8px; letter-spacing: 2.5px;
+  color: #4a4840; text-transform: uppercase;
+  display: block; margin-top: 2px;
+}
+.card-footer-row {
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.card-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px; color: #3a3830; letter-spacing: 2px;
+}
+.card-data { font-size: 9px; color: #3a3830; letter-spacing: 1.5px; }
+.card-actions {
+  display: flex; flex-direction: column; gap: 10px;
+  width: 100%; max-width: 380px; margin-top: 20px;
+}
+.btn-salvar-card, .btn-voltar-card {
+  padding: 15px; text-align: center; border-radius: 2px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  -webkit-appearance: none; width: 100%;
+}
+.btn-salvar-card {
+  background: transparent;
+  font-weight: 600;
+}
+.btn-voltar-card {
+  background: transparent; border: none;
+  color: var(--text-d);
+}
+
+/* ── ANIMATIONS ──────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+.fade-in { animation: fadeIn .6s ease both; }
+</style>
+</head>
+
+<body>
+<div id="app">
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="screen active">
+    <div class="intro-top">
+      <div class="badge">Zoraxx</div>
+      <h1 class="intro-title">Pulso<br>vital</h1>
+      <div class="intro-line"></div>
+      <p class="intro-sub">60 segundos.<br>Seu estado real, em palavras.</p>
+      <p class="intro-desc">
+        Câmera analisa frequência cardíaca, variabilidade e estresse.
+        Zoraxx interpreta o que os números revelam sobre você.
+      </p>
+      <div class="intro-aviso">
+        <p>Autoconhecimento pessoal. Não substitui avaliação médica.</p>
+      </div>
+    </div>
+    <button class="btn-scan" onclick="iniciarScan()">
+      <span class="btn-scan-main">Iniciar Scan</span>
+      <span class="btn-scan-sub">Posicione o rosto na câmera</span>
+    </button>
+  </div>
+
+  <!-- SCAN -->
+  <div id="screen-scan" class="screen">
+    <span class="scan-label">Analisando</span>
+    <div class="sonar">
+      <div class="sonar-ring"></div>
+      <div class="sonar-ring"></div>
+      <div class="sonar-ring"></div>
+      <div class="sonar-dot"></div>
+    </div>
+    <div class="scan-progress-wrap">
+      <div class="scan-progress-track">
+        <div class="scan-progress-fill" id="progress-fill"></div>
+      </div>
+      <span class="scan-pct" id="progress-pct">0%</span>
+    </div>
+    <span class="scan-dica">Mantenha o rosto visível e fique quieto</span>
+  </div>
+
+  <!-- RESULTADO -->
+  <div id="screen-resultado" class="screen">
+    <div class="resultado-inner" id="resultado-inner">
+      <!-- preenchido por JS -->
+    </div>
+  </div>
+
+  <!-- CARD -->
+  <div id="screen-card" class="screen">
+    <div class="card-wrap" id="card-wrap">
+      <!-- preenchido por JS -->
+    </div>
+    <div class="card-actions">
+      <button class="btn-salvar-card" id="btn-salvar" onclick="salvarCard()">
+        Salvar / Compartilhar
+      </button>
+      <button class="btn-voltar-card" onclick="voltarResultado()">
+        ← Voltar
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── DADOS ─────────────────────────────────────────────────────────────────
+const ESTADOS = [
+  {
+    id: 1, nome: 'Sobrecarregado',
+    sub: 'FC alta · HRV baixo · Estresse alto',
+    cor: '#c05050', corBg: '#180808',
+    narrativa: 'Hoje você está sobrecarregando seu coração. Custo de quem não para. Seu sistema nervoso está em modo total de entrega, e toda entrega tem prazos. Preste atenção nisso. Seu padrão pede uma pausa, e ela precisa de certa urgência. Que tal pensar nisso? E agir.',
+    fcR: [90,105], hrvR: [15,25], esR: [75,95],
+  },
+  {
+    id: 2, nome: 'Acelerado',
+    sub: 'FC alta · HRV baixo · Estresse médio',
+    cor: '#d07840', corBg: '#180e04',
+    narrativa: 'Você está rodando rápido hoje. O motor aguenta, mas o combustível está caindo. Seu corpo está produzindo, sua mente está junto, mas o HRV conta outra história nos bastidores. Dá para continuar. Só não esqueça de reabastecer antes de precisar.',
+    fcR: [88,100], hrvR: [18,28], esR: [40,65],
+  },
+  {
+    id: 3, nome: 'Ansioso Silencioso',
+    sub: 'FC normal · HRV baixo · Estresse alto',
+    cor: '#c8a030', corBg: '#181004',
+    narrativa: 'Por fora parece calmo. Por dentro não está. Seu coração mantém o ritmo, mas a variabilidade caiu, e o estresse está alto. Isso é ansiedade que ainda não apareceu na superfície. Ela aparece. É questão de tempo. Melhor encontrá-la agora do que depois.',
+    fcR: [65,80], hrvR: [15,25], esR: [70,90],
+  },
+  {
+    id: 4, nome: 'Tensão Acumulada',
+    sub: 'FC normal · HRV normal · Estresse alto',
+    cor: '#b8882a', corBg: '#141006',
+    narrativa: 'Seu corpo ainda está segurando bem. Mas a tensão que você está carregando na cabeça já está procurando um endereço no físico. Esse é o momento de agir antes que ela encontre. O que está pesando tanto assim hoje?',
+    fcR: [65,80], hrvR: [35,55], esR: [68,85],
+  },
+  {
+    id: 5, nome: 'Energia Ativa',
+    sub: 'FC alta · HRV normal · Estresse baixo',
+    cor: '#5aaa82', corBg: '#041410',
+    narrativa: 'Você está com energia hoje. De verdade. Seu coração acelera porque quer, não porque precisa. Variabilidade boa, estresse baixo. Esse é o estado de quem está pronto para o que vem. Aproveite bem esse dia.',
+    fcR: [85,98], hrvR: [38,55], esR: [15,35],
+  },
+  {
+    id: 6, nome: 'Equilibrado em Alerta',
+    sub: 'FC normal · HRV normal · Estresse médio',
+    cor: '#e8b84b', corBg: '#141008',
+    narrativa: 'Você está equilibrado, mas atento. Seu sistema reconhece que tem algo exigindo atenção, e está respondendo bem. Não é alarme. É presença. Continue assim, só não deixe o alerta virar pressão acumulada.',
+    fcR: [65,80], hrvR: [38,58], esR: [38,58],
+  },
+  {
+    id: 7, nome: 'Estado Ideal',
+    sub: 'FC normal · HRV normal · Estresse baixo',
+    cor: '#5aaa82', corBg: '#041410',
+    narrativa: 'Seu corpo está em harmonia hoje. Frequência, variabilidade, estresse. Tudo alinhado. Esse é o estado que permite decisões claras, relações inteiras e trabalho com sentido. Anote como chegou aqui. Vale repetir.',
+    fcR: [62,75], hrvR: [45,65], esR: [10,28],
+  },
+  {
+    id: 8, nome: 'Recuperação Profunda',
+    sub: 'FC baixa · HRV alto · Estresse baixo',
+    cor: '#4a7ab8', corBg: '#040c18',
+    narrativa: 'Seu corpo está se recuperando de verdade agora. Frequência baixa, variabilidade alta, estresse no chão. Isso não é preguiça. É inteligência fisiológica. Seu sistema sabe o que está fazendo. Deixa ele trabalhar.',
+    fcR: [52,64], hrvR: [60,80], esR: [8,22],
+  },
+  {
+    id: 9, nome: 'Esgotamento Silencioso',
+    sub: 'FC baixa · HRV baixo · Estresse baixo',
+    cor: '#7878a0', corBg: '#080810',
+    narrativa: 'Parece calma, mas não é. Seu corpo baixou o ritmo porque não tem mais muito para dar. Variabilidade caiu junto. Isso é esgotamento que já passou pela fase do alarme e entrou na fase do silêncio. Silêncio assim pede cuidado real, não só descanso de um dia.',
+    fcR: [50,62], hrvR: [15,28], esR: [12,30],
+  },
+  {
+    id: 10, nome: 'Ritmo Próprio',
+    sub: 'FC baixa · HRV normal · Estresse médio',
+    cor: '#c8912a', corBg: '#100c04',
+    narrativa: 'Você está mais lento hoje, e tudo bem. Seu corpo escolheu um ritmo diferente. A variabilidade está boa, o estresse é administrável. Não é queda. É outro tipo de dia. Tem coisas que só acontecem nesse ritmo.',
+    fcR: [54,66], hrvR: [38,55], esR: [35,55],
+  },
+  {
+    id: 11, nome: 'Vitalidade Plena',
+    sub: 'FC alta · HRV alto · Estresse baixo',
+    cor: '#e8b84b', corBg: '#141008',
+    narrativa: 'Esse é um estado raro. Coração acelerado do jeito certo, variabilidade alta, estresse baixo. Seu sistema está em expansão total. Vitalidade não é barulho. É isso aqui. O que você vai fazer com esse estado hoje?',
+    fcR: [82,96], hrvR: [58,78], esR: [10,25],
+  },
+  {
+    id: 12, nome: 'Resiliente sob Pressão',
+    sub: 'FC normal · HRV alto · Estresse médio',
+    cor: '#5aaa82', corBg: '#041410',
+    narrativa: 'Você está sob pressão e seu corpo está respondendo com elegância. Variabilidade alta mesmo com estresse presente. Isso é resiliência fisiológica de verdade. Não é sorte. É o resultado de como você tem cuidado de si. Continue.',
+    fcR: [65,80], hrvR: [55,72], esR: [38,58],
+  },
+];
+
+// ── UTILS ─────────────────────────────────────────────────────────────────
+const rand = (a, b) => Math.round(a + Math.random() * (b - a));
+const $ = id => document.getElementById(id);
+let resultado = null;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+  });
+  $(id).classList.add('active');
+  $(id).scrollTop = 0;
+}
+
+// ── SCAN ──────────────────────────────────────────────────────────────────
+function iniciarScan() {
+  showScreen('screen-scan');
+  let p = 0;
+  const fill = $('progress-fill');
+  const pct  = $('progress-pct');
+  const iv = setInterval(() => {
+    p += 100 / 120; // ~6 segundos
+    if (p >= 100) {
+      clearInterval(iv);
+      fill.style.width = '100%';
+      pct.textContent = '100%';
+      setTimeout(() => {
+        resultado = gerarResultado();
+        renderResultado();
+        showScreen('screen-resultado');
+      }, 400);
+    } else {
+      fill.style.width = p + '%';
+      pct.textContent = Math.round(p) + '%';
+    }
+  }, 50);
+}
+
+function gerarResultado() {
+  const e = ESTADOS[Math.floor(Math.random() * ESTADOS.length)];
+  return {
+    fc:       rand(...e.fcR),
+    hrv:      rand(...e.hrvR),
+    estresse: rand(...e.esR),
+    estado:   e,
+    data:     new Date().toLocaleDateString('pt-BR'),
+  };
+}
+
+// ── RENDERIZAÇÃO DO RESULTADO ─────────────────────────────────────────────
+function renderResultado() {
+  const { fc, hrv, estresse, estado, data } = resultado;
+  $('resultado-inner').innerHTML = `
+    <p class="resultado-badge fade-in">Estado Vital · Pulsovital</p>
+    <div class="resultado-accent fade-in" style="background:${estado.cor}"></div>
+    <h2 class="resultado-nome fade-in" style="color:${estado.cor}">${estado.nome}</h2>
+    <p class="resultado-sub fade-in">${estado.sub}</p>
+
+    <div class="metricas fade-in">
+      <div class="metrica">
+        <span class="metrica-valor" style="color:${estado.cor}">${fc}</span>
+        <span class="metrica-unidade">bpm</span>
+        <span class="metrica-label">FC</span>
+      </div>
+      <div class="metrica-div"></div>
+      <div class="metrica">
+        <span class="metrica-valor" style="color:${estado.cor}">${hrv}</span>
+        <span class="metrica-unidade">ms</span>
+        <span class="metrica-label">HRV</span>
+      </div>
+      <div class="metrica-div"></div>
+      <div class="metrica">
+        <span class="metrica-valor" style="color:${estado.cor}">${estresse}%</span>
+        <span class="metrica-unidade"></span>
+        <span class="metrica-label">Estresse</span>
+      </div>
+    </div>
+
+    <div class="resultado-divider fade-in" style="background:${estado.cor}"></div>
+
+    <div class="fade-in">
+      <p class="narrativa-autor">Zoraxx</p>
+      <p class="narrativa-texto">${estado.narrativa}</p>
+    </div>
+
+    <button class="btn-compartilhar fade-in"
+      style="border-color:${estado.cor};color:${estado.cor}"
+      onclick="abrirCard()">
+      Compartilhar Card
+    </button>
+
+    <button class="btn-novamente" onclick="reiniciar()">
+      Fazer novo scan
+    </button>
+
+    <div class="rodape fade-in">
+      <p class="rodape-marca">Pulsovital · Zoraxx · ${data}</p>
+      <p class="rodape-aviso">Autoconhecimento pessoal. Não é diagnóstico médico.</p>
+    </div>
+  `;
+
+  // Fundo do resultado muda por estado
+  $('screen-resultado').style.background = estado.corBg;
+}
+
+// ── CARD ──────────────────────────────────────────────────────────────────
+function abrirCard() {
+  const { fc, hrv, estresse, estado, data } = resultado;
+  const wrap = $('card-wrap');
+
+  wrap.style.background = estado.corBg;
+
+  wrap.innerHTML = `
+    <div class="card-noise"></div>
+    <div class="card-corners">
+      <div class="c tl" style="border-color:${estado.cor}"></div>
+      <div class="c tr" style="border-color:${estado.cor}"></div>
+      <div class="c bl" style="border-color:${estado.cor}"></div>
+      <div class="c br" style="border-color:${estado.cor}"></div>
+    </div>
+    <div class="card-bg">
+      <div class="card-top">
+        <p class="card-label">Estado Vital · Pulsovital</p>
+        <div class="card-accent" style="background:${estado.cor}"></div>
+        <h2 class="card-nome" style="color:${estado.cor}">${estado.nome}</h2>
+        <p class="card-sub">${estado.sub}</p>
+        <p class="card-narrativa">${estado.narrativa}</p>
+      </div>
+      <div class="card-bottom">
+        <div class="card-metricas">
+          <div>
+            <span class="card-m-valor" style="color:${estado.cor}">${fc}</span>
+            <span class="card-m-label">FC · bpm</span>
+          </div>
+          <div>
+            <span class="card-m-valor" style="color:${estado.cor}">${hrv}</span>
+            <span class="card-m-label">HRV · ms</span>
+          </div>
+          <div>
+            <span class="card-m-valor" style="color:${estado.cor}">${estresse}%</span>
+            <span class="card-m-label">Estresse</span>
+          </div>
+        </div>
+        <div class="card-footer-row">
+          <span class="card-brand">Pulsovital · Zoraxx</span>
+          <span class="card-data">${data}</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Botão compartilhar
+  const btnSalvar = $('btn-salvar');
+  btnSalvar.style.border = `1.5px solid ${estado.cor}`;
+  btnSalvar.style.color  = estado.cor;
+
+  showScreen('screen-card');
+}
+
+// ── COMPARTILHAR (Web Share API) ──────────────────────────────────────────
+async function salvarCard() {
+  const { estado } = resultado;
+
+  // Tenta Web Share API nativa
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: `Pulsovital · ${estado.nome}`,
+        text: `Meu estado vital hoje: ${estado.nome}\n\n"${estado.narrativa}"\n\nPulsovital · Zoraxx`,
+        url: window.location.href,
+      });
+      return;
+    } catch(e) {
+      // usuário cancelou ou não suportado
+    }
+  }
+
+  // Fallback: captura o card como imagem via Canvas
+  salvarComoImagem();
+}
+
+function salvarComoImagem() {
+  const { fc, hrv, estresse, estado, data } = resultado;
+
+  const canvas = document.createElement('canvas');
+  canvas.width  = 1080;
+  canvas.height = 1080;
+  const ctx = canvas.getContext('2d');
+
+  // Fundo
+  ctx.fillStyle = estado.corBg || '#0a0a0b';
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // Borda interna
+  ctx.strokeStyle = '#1a1a18';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(40, 40, 1000, 1000);
+
+  // Cantos decorativos
+  ctx.strokeStyle = estado.cor;
+  ctx.lineWidth = 2.5;
+  ctx.globalAlpha = .4;
+  const cs = 30;
+  [
+    [40, 40, cs, 0, 0, cs],       // TL
+    [1040-cs, 40, cs, 0, 0, cs],  // TR (invertido)
+    [40, 1040-cs, cs, 0, 0, cs],  // BL
+    [1040-cs, 1040-cs, cs, 0, 0, cs], // BR
+  ].forEach((_,i) => {
+    ctx.beginPath();
+    if (i === 0) { ctx.moveTo(40+cs, 40); ctx.lineTo(40,40); ctx.lineTo(40, 40+cs); }
+    if (i === 1) { ctx.moveTo(1040-cs, 40); ctx.lineTo(1040,40); ctx.lineTo(1040, 40+cs); }
+    if (i === 2) { ctx.moveTo(40, 1040-cs); ctx.lineTo(40,1040); ctx.lineTo(40+cs, 1040); }
+    if (i === 3) { ctx.moveTo(1040-cs, 1040); ctx.lineTo(1040,1040); ctx.lineTo(1040, 1040-cs); }
+    ctx.stroke();
+  });
+  ctx.globalAlpha = 1;
+
+  // Label topo
+  ctx.fillStyle = '#4a4840';
+  ctx.font = '500 22px DM Sans, sans-serif';
+  ctx.letterSpacing = '6px';
+  ctx.fillText('ESTADO VITAL · PULSOVITAL', 80, 130);
+
+  // Linha acento
+  ctx.fillStyle = estado.cor;
+  ctx.fillRect(80, 158, 64, 3);
+
+  // Nome do estado
+  ctx.fillStyle = estado.cor;
+  ctx.font = 'bold 96px "Playfair Display", Georgia, serif';
+  ctx.letterSpacing = '-2px';
+  wrapText(ctx, estado.nome, 80, 290, 900, 108);
+
+  // Sub
+  ctx.fillStyle = '#4a4840';
+  ctx.font = '400 20px DM Sans, sans-serif';
+  ctx.letterSpacing = '3px';
+  ctx.fillText(estado.sub.toUpperCase(), 80, 370);
+
+  // Divisor leve
+  ctx.fillStyle = estado.cor;
+  ctx.globalAlpha = .15;
+  ctx.fillRect(80, 400, 920, 1);
+  ctx.globalAlpha = 1;
+
+  // Narrativa
+  ctx.fillStyle = '#c0bcb4';
+  ctx.font = '300 28px DM Sans, sans-serif';
+  ctx.letterSpacing = '0px';
+  wrapText(ctx, estado.narrativa, 80, 450, 920, 40);
+
+  // Métricas
+  const mY = 820;
+  const mItems = [
+    { val: `${fc}`, lbl: 'FC · BPM' },
+    { val: `${hrv}`, lbl: 'HRV · MS' },
+    { val: `${estresse}%`, lbl: 'ESTRESSE' },
+  ];
+  mItems.forEach((m, i) => {
+    const x = 80 + i * 200;
+    ctx.fillStyle = estado.cor;
+    ctx.font = 'bold 52px "Playfair Display", Georgia, serif';
+    ctx.letterSpacing = '-1px';
+    ctx.fillText(m.val, x, mY);
+    ctx.fillStyle = '#4a4840';
+    ctx.font = '400 16px DM Sans, sans-serif';
+    ctx.letterSpacing = '3px';
+    ctx.fillText(m.lbl, x, mY + 28);
+  });
+
+  // Rodapé
+  ctx.fillStyle = '#3a3830';
+  ctx.font = '400 22px "Playfair Display", Georgia, serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText('Pulsovital · Zoraxx', 80, 980);
+  ctx.font = '400 18px DM Sans, sans-serif';
+  ctx.letterSpacing = '1px';
+  ctx.fillText(data, 1040-120, 980);
+
+  // Download
+  const link = document.createElement('a');
+  link.download = `pulsovital-${estado.nome.toLowerCase().replace(' ','-')}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// Quebra texto no canvas
+function wrapText(ctx, text, x, y, maxW, lineH) {
+  const words = text.split(' ');
+  let line = '';
+  let cy = y;
+  words.forEach((w, i) => {
+    const test = line + w + ' ';
+    const m = ctx.measureText(test);
+    if (m.width > maxW && i > 0) {
+      ctx.fillText(line.trim(), x, cy);
+      line = w + ' ';
+      cy += lineH;
+    } else {
+      line = test;
+    }
+  });
+  ctx.fillText(line.trim(), x, cy);
+}
+
+function voltarResultado() {
+  showScreen('screen-resultado');
+}
+
+function reiniciar() {
+  $('progress-fill').style.width = '0%';
+  $('progress-pct').textContent = '0%';
+  $('screen-resultado').style.background = '';
+  showScreen('screen-intro');
+}
+</script>
+</body>
+</html>
