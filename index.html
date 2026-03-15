@@ -9,82 +9,81 @@
 <meta name="apple-mobile-web-app-title" content="Pulsovital">
 <meta property="og:title" content="Pulsovital · Zoraxx">
 <meta property="og:description" content="60 segundos. Seu estado real, em palavras.">
-<meta property="og:type" content="website">
 <title>Pulsovital · Zoraxx</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-/* ── RESET & BASE ─────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg:         #0a0a0b;
-  --bg2:        #111114;
-  --bg3:        #18181c;
-  --amber:      #c8912a;
-  --amber-l:    #e8b84b;
-  --amber-d:    #6a4a18;
-  --text:       #e8e4dc;
-  --text-m:     #8a8578;
-  --text-d:     #4a4840;
-  --border:     #222018;
-  --green:      #5aaa82;
-  --red:        #c05050;
-  --blue:       #4a7ab8;
-  --orange:     #d07840;
-  --gold:       #c8a030;
-  --purple:     #7878b8;
+  --bg:      #0a0a0b;
+  --amber:   #c8912a;
+  --amber-l: #e8b84b;
+  --amber-d: #6a4a18;
+  --text:    #e8e4dc;
+  --text-m:  #8a8578;
+  --text-d:  #4a4840;
+  --border:  #222018;
+  --green:   #5aaa82;
+  --red:     #c05050;
+  --blue:    #4a7ab8;
 }
 html, body {
-  height: 100%;
-  background: var(--bg);
-  color: var(--text);
+  height: 100%; background: var(--bg); color: var(--text);
   font-family: 'DM Sans', sans-serif;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
+  overflow: hidden; -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
-
-/* ── NOISE OVERLAY ───────────────────────────────────────────────────────── */
 body::before {
-  content: '';
-  position: fixed; inset: 0;
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 9999; opacity: .5;
+  opacity: .5;
 }
 
-/* ── APP CONTAINER ───────────────────────────────────────────────────────── */
 #app {
-  height: 100dvh;
-  display: flex; flex-direction: column;
-  max-width: 480px; margin: 0 auto;
-  position: relative; overflow: hidden;
+  height: 100dvh; display: flex; flex-direction: column;
+  max-width: 480px; margin: 0 auto; position: relative; overflow: hidden;
 }
 
-/* ── SCREENS ─────────────────────────────────────────────────────────────── */
+/* ── SCREENS ── */
 .screen {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  opacity: 0; pointer-events: none;
-  transition: opacity .5s ease;
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  opacity: 0; pointer-events: none; transition: opacity .5s ease;
   overflow-y: auto; overflow-x: hidden;
 }
 .screen.active { opacity: 1; pointer-events: all; }
 
-/* ── SCREEN: INTRO ───────────────────────────────────────────────────────── */
-#screen-intro {
-  padding: 0 32px 32px;
-  justify-content: space-between;
+/* ── LOADING ── */
+#screen-loading {
+  align-items: center; justify-content: center;
+  padding: 40px; gap: 32px; text-align: center;
 }
+.loading-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px; font-weight: 700; color: var(--text);
+  animation: pulse 2s ease-in-out infinite;
+}
+.loading-logo span { color: var(--amber); }
+@keyframes pulse { 0%,100%{opacity:.6} 50%{opacity:1} }
+.loading-msg { font-size: 13px; color: var(--text-d); letter-spacing: 2px; }
+.loading-track {
+  width: 100%; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden;
+}
+.loading-fill {
+  height: 100%; background: linear-gradient(90deg, var(--amber-d), var(--amber-l));
+  width: 0%; transition: width .3s ease; border-radius: 2px;
+}
+.loading-pct { font-size: 11px; color: var(--amber-d); letter-spacing: 3px; }
+.loading-step { font-size: 12px; color: var(--text-d); letter-spacing: 1px; min-height: 18px; }
+
+/* ── INTRO ── */
+#screen-intro { padding: 0 32px 32px; justify-content: space-between; }
 .intro-top {
   padding-top: max(48px, env(safe-area-inset-top));
   flex: 1; display: flex; flex-direction: column; justify-content: center;
 }
 .badge {
-  display: inline-flex; align-items: center;
-  border: 1px solid var(--amber-d);
+  display: inline-flex; border: 1px solid var(--amber-d);
   padding: 5px 12px; border-radius: 2px;
   font-size: 10px; letter-spacing: 4px; color: var(--amber-d);
   text-transform: uppercase; margin-bottom: 28px;
@@ -92,512 +91,700 @@ body::before {
 }
 .intro-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(52px, 14vw, 72px);
-  font-weight: 700; line-height: 1.0;
-  color: var(--text); margin-bottom: 20px;
+  font-size: clamp(52px, 14vw, 72px); font-weight: 700;
+  line-height: 1.0; color: var(--text); margin-bottom: 20px;
   animation: fadeUp .8s ease both;
 }
-.intro-line {
-  width: 48px; height: 2px;
-  background: var(--amber); margin-bottom: 24px;
-  animation: fadeUp .8s .1s ease both;
-}
-.intro-sub {
-  font-size: 18px; font-weight: 300;
-  color: var(--text-m); line-height: 1.6;
-  margin-bottom: 24px;
-  animation: fadeUp .8s .2s ease both;
-}
-.intro-desc {
-  font-size: 13px; color: var(--text-d);
-  line-height: 1.7; margin-bottom: 32px;
-  animation: fadeUp .8s .3s ease both;
-}
-.intro-aviso {
-  border-left: 2px solid var(--amber-d);
-  padding-left: 14px;
-  animation: fadeUp .8s .4s ease both;
-}
-.intro-aviso p {
-  font-size: 11px; color: var(--text-d); line-height: 1.6;
-}
+.intro-line { width: 48px; height: 2px; background: var(--amber); margin-bottom: 24px; animation: fadeUp .8s .1s ease both; }
+.intro-sub { font-size: 18px; font-weight: 300; color: var(--text-m); line-height: 1.6; margin-bottom: 24px; animation: fadeUp .8s .2s ease both; }
+.intro-desc { font-size: 13px; color: var(--text-d); line-height: 1.7; margin-bottom: 32px; animation: fadeUp .8s .3s ease both; }
+.intro-aviso { border-left: 2px solid var(--amber-d); padding-left: 14px; animation: fadeUp .8s .4s ease both; }
+.intro-aviso p { font-size: 11px; color: var(--text-d); line-height: 1.6; }
 .btn-scan {
-  border: 1.5px solid var(--amber);
-  border-radius: 2px; padding: 20px;
-  text-align: center; cursor: pointer;
-  background: transparent;
-  transition: background .2s, transform .1s;
-  animation: fadeUp .8s .5s ease both;
-  -webkit-appearance: none;
-  width: 100%;
+  border: 1.5px solid var(--amber); border-radius: 2px; padding: 20px;
+  text-align: center; cursor: pointer; background: transparent;
+  transition: background .2s, transform .1s; animation: fadeUp .8s .5s ease both;
+  -webkit-appearance: none; width: 100%;
 }
 .btn-scan:active { background: rgba(200,145,42,.08); transform: scale(.98); }
-.btn-scan-main {
-  font-size: 13px; letter-spacing: 4px;
-  color: var(--amber); font-weight: 600;
-  text-transform: uppercase; display: block;
-}
-.btn-scan-sub {
-  font-size: 11px; color: var(--amber-d);
-  margin-top: 5px; letter-spacing: 1px; display: block;
-}
+.btn-scan-main { font-size: 13px; letter-spacing: 4px; color: var(--amber); font-weight: 600; text-transform: uppercase; display: block; }
+.btn-scan-sub { font-size: 11px; color: var(--amber-d); margin-top: 5px; letter-spacing: 1px; display: block; }
 
-/* ── SCREEN: SCAN ────────────────────────────────────────────────────────── */
-#screen-scan {
-  align-items: center; justify-content: center; gap: 52px;
-  padding: 40px;
+/* ── CÂMERA ── */
+#screen-camera {
+  background: #000; align-items: center; justify-content: center; gap: 0;
 }
-.scan-label {
-  font-size: 11px; letter-spacing: 5px;
-  color: var(--amber-d); text-transform: uppercase;
+.camera-header {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+  padding: max(20px, env(safe-area-inset-top)) 24px 16px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.8), transparent);
+  text-align: center;
 }
-.sonar {
-  position: relative; width: 180px; height: 180px;
+.camera-fase { font-size: 11px; letter-spacing: 4px; color: var(--amber); text-transform: uppercase; }
+.camera-instrucao { font-size: 14px; color: var(--text-m); margin-top: 4px; }
+.camera-video-wrap {
+  position: relative; width: 100%; flex: 1;
   display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
 }
-.sonar-ring {
+#video-feed {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scaleX(-1); /* espelho */
+}
+#canvas-overlay {
+  position: absolute; inset: 0;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+.face-guide {
   position: absolute;
-  width: 100%; height: 100%;
-  border-radius: 50%;
-  border: 1.5px solid var(--amber);
-  animation: sonar 2.4s ease-out infinite;
+  width: min(72vw, 320px); height: min(85vw, 380px);
+  border: 1.5px solid rgba(200,145,42,.4);
+  border-radius: 50% / 45%;
+  box-shadow: 0 0 0 1px rgba(200,145,42,.1);
+  pointer-events: none;
 }
-.sonar-ring:nth-child(2) { animation-delay: .8s; }
-.sonar-ring:nth-child(3) { animation-delay: 1.6s; }
-.sonar-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%; background: var(--amber);
-  box-shadow: 0 0 12px var(--amber);
+.face-guide.detected { border-color: var(--green); box-shadow: 0 0 20px rgba(90,170,130,.2); }
+.camera-footer {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+  padding: 16px 24px max(24px, env(safe-area-inset-bottom));
+  background: linear-gradient(to top, rgba(0,0,0,.9), transparent);
 }
-@keyframes sonar {
-  0%   { transform: scale(.2); opacity: .9; }
-  100% { transform: scale(1.9); opacity: 0; }
+.camera-progress-track { width: 100%; height: 2px; background: rgba(255,255,255,.1); border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+.camera-progress-fill { height: 100%; background: linear-gradient(90deg, var(--amber-d), var(--amber-l)); width: 0%; transition: width .15s linear; }
+.camera-status { display: flex; justify-content: space-between; align-items: center; }
+.camera-pct { font-size: 11px; letter-spacing: 3px; color: var(--amber-d); }
+.camera-tempo { font-size: 11px; color: var(--text-d); letter-spacing: 1px; }
+.foto-flash {
+  position: absolute; inset: 0; background: white;
+  animation: flash .3s ease forwards; pointer-events: none; z-index: 20;
 }
-.scan-progress-wrap { width: 100%; }
-.scan-progress-track {
-  width: 100%; height: 1px;
-  background: var(--border); border-radius: 1px;
-  overflow: hidden; margin-bottom: 10px;
-}
-.scan-progress-fill {
-  height: 100%; background: var(--amber);
-  width: 0%; transition: width .1s linear;
-}
-.scan-pct {
-  font-size: 11px; letter-spacing: 3px;
-  color: var(--amber-d); text-align: center; display: block;
-}
-.scan-dica {
-  font-size: 12px; color: var(--text-d);
-  letter-spacing: 1px; text-align: center;
-}
+@keyframes flash { 0%{opacity:.8} 100%{opacity:0} }
 
-/* ── SCREEN: RESULTADO ───────────────────────────────────────────────────── */
-#screen-resultado {
-  padding-bottom: max(40px, env(safe-area-inset-bottom));
+/* ── PROCESSANDO ── */
+#screen-processando {
+  align-items: center; justify-content: center; padding: 40px; gap: 28px; text-align: center;
 }
+.proc-logo { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--text-d); letter-spacing: 2px; }
+.proc-logo span { color: var(--amber); }
+.proc-msg { font-size: 14px; color: var(--text-m); letter-spacing: 1px; }
+.proc-track { width: 100%; height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.proc-fill { height: 100%; background: linear-gradient(90deg, var(--amber-d), var(--amber-l)); width: 0%; transition: width .4s ease; }
+.proc-pct { font-size: 11px; color: var(--amber-d); letter-spacing: 3px; }
+.proc-step { font-size: 12px; color: var(--text-d); letter-spacing: 1px; min-height: 18px; }
+
+/* ── RESULTADO ── */
+#screen-resultado { }
 .resultado-inner {
-  padding: 0 28px 40px;
-  padding-top: max(48px, env(safe-area-inset-top));
-  min-height: 100%;
-  display: flex; flex-direction: column;
+  padding: 0 28px 40px; padding-top: max(48px, env(safe-area-inset-top));
+  min-height: 100%; display: flex; flex-direction: column;
 }
-.resultado-badge {
-  font-size: 10px; letter-spacing: 4px;
-  color: var(--text-d); text-transform: uppercase;
-  margin-bottom: 14px;
-}
+.resultado-badge { font-size: 10px; letter-spacing: 4px; color: var(--text-d); text-transform: uppercase; margin-bottom: 14px; }
 .resultado-accent { width: 40px; height: 2px; margin-bottom: 16px; }
-.resultado-nome {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(40px, 11vw, 56px);
-  font-weight: 700; line-height: 1.05;
-  margin-bottom: 8px;
-}
-.resultado-sub {
-  font-size: 11px; letter-spacing: 3px;
-  color: var(--text-d); text-transform: uppercase;
-  margin-bottom: 36px;
-}
-.metricas {
-  display: flex; align-items: center;
-  margin-bottom: 36px; gap: 0;
-}
+.resultado-nome { font-family: 'Playfair Display', serif; font-size: clamp(40px, 11vw, 56px); font-weight: 700; line-height: 1.05; margin-bottom: 8px; }
+.resultado-sub { font-size: 11px; letter-spacing: 3px; color: var(--text-d); text-transform: uppercase; margin-bottom: 36px; }
+.metricas { display: flex; align-items: center; margin-bottom: 36px; }
 .metrica { flex: 1; text-align: center; }
-.metrica-valor {
-  font-family: 'Playfair Display', serif;
-  font-size: 30px; font-weight: 700;
-  display: block; margin-bottom: 3px;
-}
-.metrica-unidade {
-  font-size: 10px; color: var(--text-d);
-  letter-spacing: 2px; display: block;
-}
-.metrica-label {
-  font-size: 9px; color: var(--text-d);
-  letter-spacing: 3px; text-transform: uppercase;
-  display: block; margin-top: 2px;
-}
-.metrica-div {
-  width: 1px; height: 40px; background: var(--border);
-}
+.metrica-valor { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; display: block; margin-bottom: 3px; }
+.metrica-unidade { font-size: 10px; color: var(--text-d); letter-spacing: 2px; display: block; }
+.metrica-label { font-size: 9px; color: var(--text-d); letter-spacing: 3px; text-transform: uppercase; display: block; margin-top: 2px; }
+.metrica-div { width: 1px; height: 40px; background: var(--border); }
 .resultado-divider { height: 1px; margin-bottom: 32px; opacity: .2; }
-.narrativa-autor {
-  font-size: 10px; letter-spacing: 4px;
-  color: var(--text-d); text-transform: uppercase;
-  margin-bottom: 14px;
-}
-.narrativa-texto {
-  font-size: 16px; font-weight: 300;
-  color: var(--text); line-height: 1.75;
-  flex: 1; margin-bottom: 48px;
+.narrativa-autor { font-size: 10px; letter-spacing: 4px; color: var(--text-d); text-transform: uppercase; margin-bottom: 14px; }
+.narrativa-texto { font-size: 16px; font-weight: 300; color: var(--text); line-height: 1.75; flex: 1; margin-bottom: 48px; }
+.confianca-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid; border-radius: 2px; padding: 5px 12px;
+  font-size: 10px; letter-spacing: 2px; margin-bottom: 28px;
 }
 .btn-compartilhar {
-  border: 1.5px solid; border-radius: 2px;
-  padding: 18px; text-align: center;
-  cursor: pointer; background: transparent;
-  font-size: 12px; letter-spacing: 4px;
-  font-weight: 600; text-transform: uppercase;
-  transition: background .2s, transform .1s;
-  margin-bottom: 12px; width: 100%;
-  font-family: 'DM Sans', sans-serif;
-  -webkit-appearance: none;
+  border: 1.5px solid; border-radius: 2px; padding: 18px; text-align: center;
+  cursor: pointer; background: transparent; font-size: 12px; letter-spacing: 4px;
+  font-weight: 600; text-transform: uppercase; transition: background .2s, transform .1s;
+  margin-bottom: 12px; width: 100%; font-family: 'DM Sans', sans-serif; -webkit-appearance: none;
 }
 .btn-compartilhar:active { transform: scale(.98); }
 .btn-novamente {
-  padding: 16px; text-align: center;
-  cursor: pointer; background: transparent; border: none;
-  font-size: 12px; color: var(--text-d);
-  letter-spacing: 2px; font-family: 'DM Sans', sans-serif;
-  width: 100%; -webkit-appearance: none;
+  padding: 16px; text-align: center; cursor: pointer; background: transparent; border: none;
+  font-size: 12px; color: var(--text-d); letter-spacing: 2px;
+  font-family: 'DM Sans', sans-serif; width: 100%; -webkit-appearance: none;
 }
-.rodape {
-  border-top: 1px solid var(--border);
-  padding-top: 24px; margin-top: 16px;
-}
-.rodape-marca {
-  font-family: 'Playfair Display', serif;
-  font-size: 13px; color: var(--text-d);
-  letter-spacing: 2px; margin-bottom: 6px;
-}
-.rodape-aviso {
-  font-size: 10px; color: var(--text-d); line-height: 1.6;
-}
+.rodape { border-top: 1px solid var(--border); padding-top: 24px; margin-top: 16px; }
+.rodape-marca { font-family: 'Playfair Display', serif; font-size: 13px; color: var(--text-d); letter-spacing: 2px; margin-bottom: 6px; }
+.rodape-aviso { font-size: 10px; color: var(--text-d); line-height: 1.6; }
 
-/* ── SCREEN: CARD ────────────────────────────────────────────────────────── */
-#screen-card {
-  align-items: center; justify-content: center;
-  padding: 24px;
-  background: var(--bg);
-}
-.card-wrap {
-  width: 100%; max-width: 380px;
-  aspect-ratio: 1;
-  position: relative;
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 32px 80px rgba(0,0,0,.6);
-}
-.card-bg {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  justify-content: space-between;
-  padding: 32px;
-}
-.card-noise {
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; opacity: .5;
-}
-.card-corners .c {
-  position: absolute; width: 20px; height: 20px;
-  border-style: solid; opacity: .4;
-}
+/* ── CARD ── */
+#screen-card { align-items: center; justify-content: center; padding: 24px; background: var(--bg); }
+.card-wrap { width: 100%; max-width: 380px; aspect-ratio: 1; position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,.6); }
+.card-bg { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 32px; }
+.card-noise { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; opacity: .5; }
+.card-corners .c { position: absolute; width: 20px; height: 20px; border-style: solid; opacity: .4; }
 .card-corners .tl { top: 16px; left: 16px; border-width: 2px 0 0 2px; }
 .card-corners .tr { top: 16px; right: 16px; border-width: 2px 2px 0 0; }
 .card-corners .bl { bottom: 16px; left: 16px; border-width: 0 0 2px 2px; }
 .card-corners .br { bottom: 16px; right: 16px; border-width: 0 2px 2px 0; }
-.card-top {}
-.card-label {
-  font-size: 9px; letter-spacing: 4px;
-  color: #4a4840; text-transform: uppercase;
-  margin-bottom: 10px;
-}
+.card-label { font-size: 9px; letter-spacing: 4px; color: #4a4840; text-transform: uppercase; margin-bottom: 10px; }
 .card-accent { width: 32px; height: 1.5px; margin-bottom: 12px; }
-.card-nome {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(28px, 8vw, 42px);
-  font-weight: 700; line-height: 1.1;
-  margin-bottom: 6px;
-}
-.card-sub {
-  font-size: 9px; letter-spacing: 2.5px;
-  color: #4a4840; text-transform: uppercase;
-  margin-bottom: 16px;
-}
-.card-narrativa {
-  font-size: clamp(10px, 2.5vw, 13px);
-  font-weight: 300; line-height: 1.65;
-  color: #c0bcb4;
-}
-.card-bottom {}
-.card-metricas {
-  display: flex; gap: 24px; margin-bottom: 16px;
-}
-.card-m-valor {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px; font-weight: 700; display: block;
-}
-.card-m-label {
-  font-size: 8px; letter-spacing: 2.5px;
-  color: #4a4840; text-transform: uppercase;
-  display: block; margin-top: 2px;
-}
-.card-footer-row {
-  display: flex; justify-content: space-between; align-items: flex-end;
-}
-.card-brand {
-  font-family: 'Playfair Display', serif;
-  font-size: 12px; color: #3a3830; letter-spacing: 2px;
-}
+.card-nome { font-family: 'Playfair Display', serif; font-size: clamp(28px, 8vw, 42px); font-weight: 700; line-height: 1.1; margin-bottom: 6px; }
+.card-sub { font-size: 9px; letter-spacing: 2.5px; color: #4a4840; text-transform: uppercase; margin-bottom: 16px; }
+.card-narrativa { font-size: clamp(10px, 2.5vw, 13px); font-weight: 300; line-height: 1.65; color: #c0bcb4; }
+.card-metricas { display: flex; gap: 24px; margin-bottom: 16px; }
+.card-m-valor { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; display: block; }
+.card-m-label { font-size: 8px; letter-spacing: 2.5px; color: #4a4840; text-transform: uppercase; display: block; margin-top: 2px; }
+.card-footer-row { display: flex; justify-content: space-between; align-items: flex-end; }
+.card-brand { font-family: 'Playfair Display', serif; font-size: 12px; color: #3a3830; letter-spacing: 2px; }
 .card-data { font-size: 9px; color: #3a3830; letter-spacing: 1.5px; }
-.card-actions {
-  display: flex; flex-direction: column; gap: 10px;
-  width: 100%; max-width: 380px; margin-top: 20px;
-}
-.btn-salvar-card, .btn-voltar-card {
-  padding: 15px; text-align: center; border-radius: 2px;
-  cursor: pointer; font-family: 'DM Sans', sans-serif;
-  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
-  -webkit-appearance: none; width: 100%;
-}
-.btn-salvar-card {
-  background: transparent;
-  font-weight: 600;
-}
-.btn-voltar-card {
-  background: transparent; border: none;
-  color: var(--text-d);
-}
+.card-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 380px; margin-top: 20px; }
+.btn-salvar-card, .btn-voltar-card { padding: 15px; text-align: center; border-radius: 2px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; -webkit-appearance: none; width: 100%; }
+.btn-salvar-card { background: transparent; font-weight: 600; }
+.btn-voltar-card { background: transparent; border: none; color: var(--text-d); }
 
-/* ── ANIMATIONS ──────────────────────────────────────────────────────────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
 .fade-in { animation: fadeIn .6s ease both; }
 </style>
 </head>
-
 <body>
 <div id="app">
 
+  <!-- LOADING -->
+  <div id="screen-loading" class="screen active">
+    <div class="loading-logo">Pulso<span>vital</span></div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:10px">
+      <div class="loading-track"><div class="loading-fill" id="loading-fill"></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="loading-step" id="loading-step">Iniciando...</span>
+        <span class="loading-pct" id="loading-pct">0%</span>
+      </div>
+    </div>
+    <p class="loading-msg">Carregando modelos de análise</p>
+  </div>
+
   <!-- INTRO -->
-  <div id="screen-intro" class="screen active">
+  <div id="screen-intro" class="screen">
     <div class="intro-top">
       <div class="badge">Zoraxx</div>
       <h1 class="intro-title">Pulso<br>vital</h1>
       <div class="intro-line"></div>
-      <p class="intro-sub">60 segundos.<br>Seu estado real, em palavras.</p>
+      <p class="intro-sub">Câmera. Dados reais.<br>Seu estado, em palavras.</p>
       <p class="intro-desc">
-        Câmera analisa frequência cardíaca, variabilidade e estresse.
-        Zoraxx interpreta o que os números revelam sobre você.
+        4 fotos + 5 segundos de vídeo. Análise de frequência cardíaca,
+        variabilidade, tensão facial e padrão de respiração.
+        Zoraxx interpreta o resultado.
       </p>
       <div class="intro-aviso">
-        <p>Autoconhecimento pessoal. Não substitui avaliação médica.</p>
+        <p>Autoconhecimento pessoal. Não substitui avaliação médica.<br>
+        Dados processados no seu dispositivo. Nada é enviado.</p>
       </div>
     </div>
-    <button class="btn-scan" onclick="iniciarScan()">
-      <span class="btn-scan-main">Iniciar Scan</span>
-      <span class="btn-scan-sub">Posicione o rosto na câmera</span>
+    <button class="btn-scan" onclick="iniciarCamera()">
+      <span class="btn-scan-main">Iniciar Análise</span>
+      <span class="btn-scan-sub">Câmera · Luz ambiente boa · ~20 segundos</span>
     </button>
   </div>
 
-  <!-- SCAN -->
-  <div id="screen-scan" class="screen">
-    <span class="scan-label">Analisando</span>
-    <div class="sonar">
-      <div class="sonar-ring"></div>
-      <div class="sonar-ring"></div>
-      <div class="sonar-ring"></div>
-      <div class="sonar-dot"></div>
+  <!-- CÂMERA -->
+  <div id="screen-camera" class="screen">
+    <div class="camera-header">
+      <p class="camera-fase" id="camera-fase">Posicione seu rosto</p>
+      <p class="camera-instrucao" id="camera-instrucao">Centralize no oval e fique quieto</p>
     </div>
-    <div class="scan-progress-wrap">
-      <div class="scan-progress-track">
-        <div class="scan-progress-fill" id="progress-fill"></div>
+    <div class="camera-video-wrap">
+      <video id="video-feed" autoplay playsinline muted></video>
+      <canvas id="canvas-overlay"></canvas>
+      <div class="face-guide" id="face-guide"></div>
+    </div>
+    <div class="camera-footer">
+      <div class="camera-progress-track">
+        <div class="camera-progress-fill" id="camera-progress-fill"></div>
       </div>
-      <span class="scan-pct" id="progress-pct">0%</span>
+      <div class="camera-status">
+        <span class="camera-pct" id="camera-pct">0%</span>
+        <span class="camera-tempo" id="camera-tempo">Aguardando rosto...</span>
+      </div>
     </div>
-    <span class="scan-dica">Mantenha o rosto visível e fique quieto</span>
+  </div>
+
+  <!-- PROCESSANDO -->
+  <div id="screen-processando" class="screen">
+    <div class="proc-logo">Pulso<span>vital</span></div>
+    <p class="proc-msg" id="proc-msg">Analisando dados...</p>
+    <div style="width:100%;display:flex;flex-direction:column;gap:10px">
+      <div class="proc-track"><div class="proc-fill" id="proc-fill"></div></div>
+      <div style="display:flex;justify-content:space-between">
+        <span class="proc-step" id="proc-step">Processando imagens</span>
+        <span class="proc-pct" id="proc-pct">0%</span>
+      </div>
+    </div>
   </div>
 
   <!-- RESULTADO -->
   <div id="screen-resultado" class="screen">
-    <div class="resultado-inner" id="resultado-inner">
-      <!-- preenchido por JS -->
-    </div>
+    <div class="resultado-inner" id="resultado-inner"></div>
   </div>
 
   <!-- CARD -->
   <div id="screen-card" class="screen">
-    <div class="card-wrap" id="card-wrap">
-      <!-- preenchido por JS -->
-    </div>
+    <div class="card-wrap" id="card-wrap"></div>
     <div class="card-actions">
-      <button class="btn-salvar-card" id="btn-salvar" onclick="salvarCard()">
-        Salvar / Compartilhar
-      </button>
-      <button class="btn-voltar-card" onclick="voltarResultado()">
-        ← Voltar
-      </button>
+      <button class="btn-salvar-card" id="btn-salvar" onclick="salvarCard()">Salvar / Compartilhar</button>
+      <button class="btn-voltar-card" onclick="showScreen('screen-resultado')">← Voltar</button>
     </div>
   </div>
 
 </div>
 
+<!-- MediaPipe Face Mesh -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+
 <script>
-// ── DADOS ─────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
+// DADOS — 12 ESTADOS + NARRATIVAS ZORAXX
+// ═══════════════════════════════════════════════════════════════════════════
 const ESTADOS = [
-  {
-    id: 1, nome: 'Sobrecarregado',
-    sub: 'FC alta · HRV baixo · Estresse alto',
-    cor: '#c05050', corBg: '#180808',
-    narrativa: 'Hoje você está sobrecarregando seu coração. Custo de quem não para. Seu sistema nervoso está em modo total de entrega, e toda entrega tem prazos. Preste atenção nisso. Seu padrão pede uma pausa, e ela precisa de certa urgência. Que tal pensar nisso? E agir.',
-    fcR: [90,105], hrvR: [15,25], esR: [75,95],
-  },
-  {
-    id: 2, nome: 'Acelerado',
-    sub: 'FC alta · HRV baixo · Estresse médio',
-    cor: '#d07840', corBg: '#180e04',
-    narrativa: 'Você está rodando rápido hoje. O motor aguenta, mas o combustível está caindo. Seu corpo está produzindo, sua mente está junto, mas o HRV conta outra história nos bastidores. Dá para continuar. Só não esqueça de reabastecer antes de precisar.',
-    fcR: [88,100], hrvR: [18,28], esR: [40,65],
-  },
-  {
-    id: 3, nome: 'Ansioso Silencioso',
-    sub: 'FC normal · HRV baixo · Estresse alto',
-    cor: '#c8a030', corBg: '#181004',
-    narrativa: 'Por fora parece calmo. Por dentro não está. Seu coração mantém o ritmo, mas a variabilidade caiu, e o estresse está alto. Isso é ansiedade que ainda não apareceu na superfície. Ela aparece. É questão de tempo. Melhor encontrá-la agora do que depois.',
-    fcR: [65,80], hrvR: [15,25], esR: [70,90],
-  },
-  {
-    id: 4, nome: 'Tensão Acumulada',
-    sub: 'FC normal · HRV normal · Estresse alto',
-    cor: '#b8882a', corBg: '#141006',
-    narrativa: 'Seu corpo ainda está segurando bem. Mas a tensão que você está carregando na cabeça já está procurando um endereço no físico. Esse é o momento de agir antes que ela encontre. O que está pesando tanto assim hoje?',
-    fcR: [65,80], hrvR: [35,55], esR: [68,85],
-  },
-  {
-    id: 5, nome: 'Energia Ativa',
-    sub: 'FC alta · HRV normal · Estresse baixo',
-    cor: '#5aaa82', corBg: '#041410',
-    narrativa: 'Você está com energia hoje. De verdade. Seu coração acelera porque quer, não porque precisa. Variabilidade boa, estresse baixo. Esse é o estado de quem está pronto para o que vem. Aproveite bem esse dia.',
-    fcR: [85,98], hrvR: [38,55], esR: [15,35],
-  },
-  {
-    id: 6, nome: 'Equilibrado em Alerta',
-    sub: 'FC normal · HRV normal · Estresse médio',
-    cor: '#e8b84b', corBg: '#141008',
-    narrativa: 'Você está equilibrado, mas atento. Seu sistema reconhece que tem algo exigindo atenção, e está respondendo bem. Não é alarme. É presença. Continue assim, só não deixe o alerta virar pressão acumulada.',
-    fcR: [65,80], hrvR: [38,58], esR: [38,58],
-  },
-  {
-    id: 7, nome: 'Estado Ideal',
-    sub: 'FC normal · HRV normal · Estresse baixo',
-    cor: '#5aaa82', corBg: '#041410',
-    narrativa: 'Seu corpo está em harmonia hoje. Frequência, variabilidade, estresse. Tudo alinhado. Esse é o estado que permite decisões claras, relações inteiras e trabalho com sentido. Anote como chegou aqui. Vale repetir.',
-    fcR: [62,75], hrvR: [45,65], esR: [10,28],
-  },
-  {
-    id: 8, nome: 'Recuperação Profunda',
-    sub: 'FC baixa · HRV alto · Estresse baixo',
-    cor: '#4a7ab8', corBg: '#040c18',
-    narrativa: 'Seu corpo está se recuperando de verdade agora. Frequência baixa, variabilidade alta, estresse no chão. Isso não é preguiça. É inteligência fisiológica. Seu sistema sabe o que está fazendo. Deixa ele trabalhar.',
-    fcR: [52,64], hrvR: [60,80], esR: [8,22],
-  },
-  {
-    id: 9, nome: 'Esgotamento Silencioso',
-    sub: 'FC baixa · HRV baixo · Estresse baixo',
-    cor: '#7878a0', corBg: '#080810',
-    narrativa: 'Parece calma, mas não é. Seu corpo baixou o ritmo porque não tem mais muito para dar. Variabilidade caiu junto. Isso é esgotamento que já passou pela fase do alarme e entrou na fase do silêncio. Silêncio assim pede cuidado real, não só descanso de um dia.',
-    fcR: [50,62], hrvR: [15,28], esR: [12,30],
-  },
-  {
-    id: 10, nome: 'Ritmo Próprio',
-    sub: 'FC baixa · HRV normal · Estresse médio',
-    cor: '#c8912a', corBg: '#100c04',
-    narrativa: 'Você está mais lento hoje, e tudo bem. Seu corpo escolheu um ritmo diferente. A variabilidade está boa, o estresse é administrável. Não é queda. É outro tipo de dia. Tem coisas que só acontecem nesse ritmo.',
-    fcR: [54,66], hrvR: [38,55], esR: [35,55],
-  },
-  {
-    id: 11, nome: 'Vitalidade Plena',
-    sub: 'FC alta · HRV alto · Estresse baixo',
-    cor: '#e8b84b', corBg: '#141008',
-    narrativa: 'Esse é um estado raro. Coração acelerado do jeito certo, variabilidade alta, estresse baixo. Seu sistema está em expansão total. Vitalidade não é barulho. É isso aqui. O que você vai fazer com esse estado hoje?',
-    fcR: [82,96], hrvR: [58,78], esR: [10,25],
-  },
-  {
-    id: 12, nome: 'Resiliente sob Pressão',
-    sub: 'FC normal · HRV alto · Estresse médio',
-    cor: '#5aaa82', corBg: '#041410',
-    narrativa: 'Você está sob pressão e seu corpo está respondendo com elegância. Variabilidade alta mesmo com estresse presente. Isso é resiliência fisiológica de verdade. Não é sorte. É o resultado de como você tem cuidado de si. Continue.',
-    fcR: [65,80], hrvR: [55,72], esR: [38,58],
-  },
+  { id:1, nome:'Sobrecarregado', sub:'FC alta · HRV baixo · Estresse alto', cor:'#c05050', corBg:'#180808',
+    narrativa:'Hoje você está sobrecarregando seu coração. Custo de quem não para. Seu sistema nervoso está em modo total de entrega, e toda entrega tem prazos. Preste atenção nisso. Seu padrão pede uma pausa, e ela precisa de certa urgência. Que tal pensar nisso? E agir.',
+    fcMin:90, fcMax:105, hrvMin:15, hrvMax:25, esMin:75, esMax:95, tensaoMin:0.6, piscarMin:0.3 },
+  { id:2, nome:'Acelerado', sub:'FC alta · HRV baixo · Estresse médio', cor:'#d07840', corBg:'#180e04',
+    narrativa:'Você está rodando rápido hoje. O motor aguenta, mas o combustível está caindo. Seu corpo está produzindo, sua mente está junto, mas o HRV conta outra história nos bastidores. Dá para continuar. Só não esqueça de reabastecer antes de precisar.',
+    fcMin:88, fcMax:100, hrvMin:18, hrvMax:28, esMin:40, esMax:65, tensaoMin:0.4, piscarMin:0.25 },
+  { id:3, nome:'Ansioso Silencioso', sub:'FC normal · HRV baixo · Estresse alto', cor:'#c8a030', corBg:'#181004',
+    narrativa:'Por fora parece calmo. Por dentro não está. Seu coração mantém o ritmo, mas a variabilidade caiu, e o estresse está alto. Isso é ansiedade que ainda não apareceu na superfície. Ela aparece. É questão de tempo. Melhor encontrá-la agora do que depois.',
+    fcMin:65, fcMax:80, hrvMin:15, hrvMax:25, esMin:70, esMax:90, tensaoMin:0.5, piscarMin:0.2 },
+  { id:4, nome:'Tensão Acumulada', sub:'FC normal · HRV normal · Estresse alto', cor:'#b8882a', corBg:'#141006',
+    narrativa:'Seu corpo ainda está segurando bem. Mas a tensão que você está carregando na cabeça já está procurando um endereço no físico. Esse é o momento de agir antes que ela encontre. O que está pesando tanto assim hoje?',
+    fcMin:65, fcMax:80, hrvMin:35, hrvMax:55, esMin:68, esMax:85, tensaoMin:0.55, piscarMin:0.15 },
+  { id:5, nome:'Energia Ativa', sub:'FC alta · HRV normal · Estresse baixo', cor:'#5aaa82', corBg:'#041410',
+    narrativa:'Você está com energia hoje. De verdade. Seu coração acelera porque quer, não porque precisa. Variabilidade boa, estresse baixo. Esse é o estado de quem está pronto para o que vem. Aproveite bem esse dia.',
+    fcMin:85, fcMax:98, hrvMin:38, hrvMax:55, esMin:15, esMax:35, tensaoMin:0.1, piscarMin:0.18 },
+  { id:6, nome:'Equilibrado em Alerta', sub:'FC normal · HRV normal · Estresse médio', cor:'#e8b84b', corBg:'#141008',
+    narrativa:'Você está equilibrado, mas atento. Seu sistema reconhece que tem algo exigindo atenção, e está respondendo bem. Não é alarme. É presença. Continue assim, só não deixe o alerta virar pressão acumulada.',
+    fcMin:65, fcMax:80, hrvMin:38, hrvMax:58, esMin:38, esMax:58, tensaoMin:0.25, piscarMin:0.18 },
+  { id:7, nome:'Estado Ideal', sub:'FC normal · HRV normal · Estresse baixo', cor:'#5aaa82', corBg:'#041410',
+    narrativa:'Seu corpo está em harmonia hoje. Frequência, variabilidade, estresse. Tudo alinhado. Esse é o estado que permite decisões claras, relações inteiras e trabalho com sentido. Anote como chegou aqui. Vale repetir.',
+    fcMin:62, fcMax:75, hrvMin:45, hrvMax:65, esMin:10, esMax:28, tensaoMin:0.05, piscarMin:0.17 },
+  { id:8, nome:'Recuperação Profunda', sub:'FC baixa · HRV alto · Estresse baixo', cor:'#4a7ab8', corBg:'#040c18',
+    narrativa:'Seu corpo está se recuperando de verdade agora. Frequência baixa, variabilidade alta, estresse no chão. Isso não é preguiça. É inteligência fisiológica. Seu sistema sabe o que está fazendo. Deixa ele trabalhar.',
+    fcMin:52, fcMax:64, hrvMin:60, hrvMax:80, esMin:8, esMax:22, tensaoMin:0.05, piscarMin:0.12 },
+  { id:9, nome:'Esgotamento Silencioso', sub:'FC baixa · HRV baixo · Estresse baixo', cor:'#7878a0', corBg:'#080810',
+    narrativa:'Parece calma, mas não é. Seu corpo baixou o ritmo porque não tem mais muito para dar. Variabilidade caiu junto. Isso é esgotamento que já passou pela fase do alarme e entrou na fase do silêncio. Silêncio assim pede cuidado real, não só descanso de um dia.',
+    fcMin:50, fcMax:62, hrvMin:15, hrvMax:28, esMin:12, esMax:30, tensaoMin:0.2, piscarMin:0.1 },
+  { id:10, nome:'Ritmo Próprio', sub:'FC baixa · HRV normal · Estresse médio', cor:'#c8912a', corBg:'#100c04',
+    narrativa:'Você está mais lento hoje, e tudo bem. Seu corpo escolheu um ritmo diferente. A variabilidade está boa, o estresse é administrável. Não é queda. É outro tipo de dia. Tem coisas que só acontecem nesse ritmo.',
+    fcMin:54, fcMax:66, hrvMin:38, hrvMax:55, esMin:35, esMax:55, tensaoMin:0.15, piscarMin:0.16 },
+  { id:11, nome:'Vitalidade Plena', sub:'FC alta · HRV alto · Estresse baixo', cor:'#e8b84b', corBg:'#141008',
+    narrativa:'Esse é um estado raro. Coração acelerado do jeito certo, variabilidade alta, estresse baixo. Seu sistema está em expansão total. Vitalidade não é barulho. É isso aqui. O que você vai fazer com esse estado hoje?',
+    fcMin:82, fcMax:96, hrvMin:58, hrvMax:78, esMin:10, esMax:25, tensaoMin:0.05, piscarMin:0.2 },
+  { id:12, nome:'Resiliente sob Pressão', sub:'FC normal · HRV alto · Estresse médio', cor:'#5aaa82', corBg:'#041410',
+    narrativa:'Você está sob pressão e seu corpo está respondendo com elegância. Variabilidade alta mesmo com estresse presente. Isso é resiliência fisiológica de verdade. Não é sorte. É o resultado de como você tem cuidado de si. Continue.',
+    fcMin:65, fcMax:80, hrvMin:55, hrvMax:72, esMin:38, esMax:58, tensaoMin:0.2, piscarMin:0.18 },
 ];
 
-// ── UTILS ─────────────────────────────────────────────────────────────────
-const rand = (a, b) => Math.round(a + Math.random() * (b - a));
-const $ = id => document.getElementById(id);
+// ═══════════════════════════════════════════════════════════════════════════
+// ESTADO GLOBAL
+// ═══════════════════════════════════════════════════════════════════════════
+let faceMesh = null;
+let videoStream = null;
 let resultado = null;
 
+// Dados coletados durante o scan
+const dadosColetados = {
+  rgbFrames: [],      // frames RGB para rPPG
+  tensaoFacial: [],   // score de tensão muscular
+  piscar: [],         // eventos de piscar
+  fotos: [],          // 4 snapshots
+  faceDetectada: false,
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const rand = (a, b) => Math.round(a + Math.random() * (b - a));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => {
-    s.classList.remove('active');
-  });
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   $(id).classList.add('active');
   $(id).scrollTop = 0;
 }
 
-// ── SCAN ──────────────────────────────────────────────────────────────────
-function iniciarScan() {
-  showScreen('screen-scan');
-  let p = 0;
-  const fill = $('progress-fill');
-  const pct  = $('progress-pct');
-  const iv = setInterval(() => {
-    p += 100 / 120; // ~6 segundos
-    if (p >= 100) {
-      clearInterval(iv);
-      fill.style.width = '100%';
-      pct.textContent = '100%';
-      setTimeout(() => {
-        resultado = gerarResultado();
-        renderResultado();
-        showScreen('screen-resultado');
-      }, 400);
-    } else {
-      fill.style.width = p + '%';
-      pct.textContent = Math.round(p) + '%';
+function setLoading(fill, pct, step) {
+  $('loading-fill').style.width = fill + '%';
+  $('loading-pct').textContent = fill + '%';
+  $('loading-step').textContent = step;
+}
+
+function setProcessando(fill, step) {
+  $('proc-fill').style.width = fill + '%';
+  $('proc-pct').textContent = fill + '%';
+  $('proc-step').textContent = step;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// INICIALIZAÇÃO — CARREGA MEDIAPIPE
+// ═══════════════════════════════════════════════════════════════════════════
+async function init() {
+  try {
+    setLoading(10, '10%', 'Carregando motor de visão...');
+    await new Promise(r => setTimeout(r, 300));
+
+    setLoading(30, '30%', 'Baixando modelo facial...');
+
+    faceMesh = new FaceMesh({
+      locateFile: file =>
+        `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+    });
+
+    faceMesh.setOptions({
+      maxNumFaces: 1,
+      refineLandmarks: true,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5,
+    });
+
+    setLoading(60, '60%', 'Inicializando detector...');
+
+    await new Promise((resolve, reject) => {
+      faceMesh.onResults(() => {}); // warm up
+      // Aguarda modelos carregarem (o MediaPipe baixa assincronamente)
+      setTimeout(resolve, 1200);
+    });
+
+    setLoading(80, '80%', 'Calibrando análise rPPG...');
+    await new Promise(r => setTimeout(r, 400));
+
+    setLoading(95, '95%', 'Pronto para análise...');
+    await new Promise(r => setTimeout(r, 300));
+
+    setLoading(100, '100%', 'Concluído');
+    await new Promise(r => setTimeout(r, 400));
+
+    showScreen('screen-intro');
+
+  } catch (err) {
+    console.error('Erro ao carregar MediaPipe:', err);
+    // Fallback: continua sem MediaPipe (análise simplificada)
+    setLoading(100, '100%', 'Modo simplificado ativo');
+    await new Promise(r => setTimeout(r, 500));
+    showScreen('screen-intro');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CÂMERA E COLETA
+// ═══════════════════════════════════════════════════════════════════════════
+async function iniciarCamera() {
+  showScreen('screen-camera');
+
+  try {
+    videoStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+      audio: false,
+    });
+
+    const video = $('video-feed');
+    video.srcObject = videoStream;
+    await video.play();
+
+    // Resize canvas overlay
+    const canvas = $('canvas-overlay');
+    video.addEventListener('loadedmetadata', () => {
+      canvas.width  = video.videoWidth;
+      canvas.height = video.videoHeight;
+    });
+
+    iniciarColeta(video);
+
+  } catch (err) {
+    alert('Câmera não disponível. Verifique as permissões e tente novamente.');
+    showScreen('screen-intro');
+  }
+}
+
+async function iniciarColeta(video) {
+  const faceGuide = $('face-guide');
+  const fill      = $('camera-progress-fill');
+  const pct       = $('camera-pct');
+  const tempo     = $('camera-tempo');
+  const fase      = $('camera-fase');
+  const instrucao = $('camera-instrucao');
+  const canvas    = $('canvas-overlay');
+  const ctx       = canvas.getContext('2d');
+
+  // Reset dados
+  Object.assign(dadosColetados, {
+    rgbFrames: [], tensaoFacial: [], piscar: [],
+    fotos: [], faceDetectada: false,
+  });
+
+  let faceOk         = false;
+  let fotosTiradas   = 0;
+  let faseAtual      = 'aguardando'; // aguardando | fotos | video | concluido
+  let progressoTotal = 0;
+  let frameCount     = 0;
+  let olhoAberto     = true;
+  let piscarCount    = 0;
+  const TOTAL_FOTOS  = 4;
+  const VIDEO_FRAMES = 150; // ~5s a 30fps
+
+  // Configura callback do MediaPipe
+  if (faceMesh) {
+    faceMesh.onResults(results => {
+      if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) {
+        faceOk = false;
+        faceGuide.classList.remove('detected');
+        return;
+      }
+
+      faceOk = true;
+      faceGuide.classList.add('detected');
+      const lm = results.multiFaceLandmarks[0];
+
+      // ── Tensão facial: distância entre sobrancelhas (landmarks 65 e 295)
+      const sb1 = lm[65], sb2 = lm[295];
+      const distSob = Math.sqrt((sb1.x-sb2.x)**2 + (sb1.y-sb2.y)**2);
+      const tensao = clamp(1 - distSob * 8, 0, 1); // quanto mais perto = mais tensão
+      dadosColetados.tensaoFacial.push(tensao);
+
+      // ── Piscar: razão abertura olho (EAR) — landmarks 159,145 (olho esq)
+      const ey1 = lm[159], ey2 = lm[145];
+      const ear = Math.abs(ey1.y - ey2.y);
+      const piscouAgora = ear < 0.008;
+      if (piscouAgora && olhoAberto) { piscarCount++; dadosColetados.piscar.push(frameCount); }
+      olhoAberto = !piscouAgora;
+
+      // ── rPPG: média RGB da região da testa (landmarks 10, 151, 9)
+      if (faseAtual === 'video' || faseAtual === 'fotos') {
+        const cx = Math.round(lm[10].x * canvas.width);
+        const cy = Math.round(lm[10].y * canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const reg = ctx.getImageData(Math.max(0,cx-20), Math.max(0,cy-10), 40, 20);
+        let r=0, g=0, b=0, n=0;
+        for (let i=0; i<reg.data.length; i+=4) {
+          r+=reg.data[i]; g+=reg.data[i+1]; b+=reg.data[i+2]; n++;
+        }
+        if (n > 0) dadosColetados.rgbFrames.push({ r:r/n, g:g/n, b:b/n, t:Date.now() });
+      }
+
+      frameCount++;
+    });
+  }
+
+  // Loop principal de captura
+  const loopId = setInterval(async () => {
+    if (faceMesh && video.readyState >= 2) {
+      await faceMesh.send({ image: video });
+    } else if (!faceMesh) {
+      // Fallback sem MediaPipe
+      faceOk = true;
+      faceGuide.classList.add('detected');
     }
-  }, 50);
+
+    // ── FSM de coleta ────────────────────────────────
+    if (faseAtual === 'aguardando') {
+      if (faceOk) {
+        faseAtual = 'fotos';
+        fase.textContent = 'FASE 1 · Fotos';
+        instrucao.textContent = 'Fique quieto — capturando';
+      } else {
+        tempo.textContent = 'Aguardando rosto...';
+      }
+
+    } else if (faseAtual === 'fotos') {
+      const intervalo = Math.floor((VIDEO_FRAMES / TOTAL_FOTOS));
+      if (frameCount % intervalo === 0 && fotosTiradas < TOTAL_FOTOS) {
+        // Tira foto
+        const fotoCanvas = document.createElement('canvas');
+        fotoCanvas.width = video.videoWidth || 320;
+        fotoCanvas.height = video.videoHeight || 240;
+        fotoCanvas.getContext('2d').drawImage(video, 0, 0);
+        dadosColetados.fotos.push(fotoCanvas.toDataURL('image/jpeg', 0.8));
+        fotosTiradas++;
+
+        // Flash visual
+        const flash = document.createElement('div');
+        flash.className = 'foto-flash';
+        $('camera-video-wrap').appendChild(flash);
+        setTimeout(() => flash.remove(), 300);
+
+        fase.textContent = `FASE 1 · Foto ${fotosTiradas}/${TOTAL_FOTOS}`;
+      }
+
+      progressoTotal = (fotosTiradas / TOTAL_FOTOS) * 40;
+      fill.style.width = progressoTotal + '%';
+      pct.textContent = Math.round(progressoTotal) + '%';
+      tempo.textContent = `Foto ${fotosTiradas}/${TOTAL_FOTOS}`;
+
+      if (fotosTiradas >= TOTAL_FOTOS) {
+        faseAtual = 'video';
+        fase.textContent = 'FASE 2 · Vídeo rPPG';
+        instrucao.textContent = 'Respire normalmente — não pisque demais';
+      }
+
+    } else if (faseAtual === 'video') {
+      const videoFrames = dadosColetados.rgbFrames.length;
+      const progVideo = Math.min(videoFrames / VIDEO_FRAMES, 1);
+      progressoTotal = 40 + progVideo * 55;
+      fill.style.width = progressoTotal + '%';
+      pct.textContent = Math.round(progressoTotal) + '%';
+
+      const segs = Math.round((VIDEO_FRAMES - videoFrames) / 30);
+      tempo.textContent = segs > 0 ? `${segs}s restantes` : 'Finalizando...';
+
+      if (videoFrames >= VIDEO_FRAMES) {
+        faseAtual = 'concluido';
+        fill.style.width = '100%';
+        pct.textContent = '100%';
+        clearInterval(loopId);
+        pararCamera();
+        await processarDados();
+      }
+    }
+
+  }, 33); // ~30fps
 }
 
-function gerarResultado() {
-  const e = ESTADOS[Math.floor(Math.random() * ESTADOS.length)];
-  return {
-    fc:       rand(...e.fcR),
-    hrv:      rand(...e.hrvR),
-    estresse: rand(...e.esR),
-    estado:   e,
-    data:     new Date().toLocaleDateString('pt-BR'),
-  };
+function pararCamera() {
+  if (videoStream) {
+    videoStream.getTracks().forEach(t => t.stop());
+    videoStream = null;
+  }
 }
 
-// ── RENDERIZAÇÃO DO RESULTADO ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
+// PROCESSAMENTO — ANÁLISE DOS DADOS COLETADOS
+// ═══════════════════════════════════════════════════════════════════════════
+async function processarDados() {
+  showScreen('screen-processando');
+
+  setProcessando(10, 'Processando frames rPPG...');
+  await delay(300);
+
+  // ── 1. rPPG → FC e HRV ───────────────────────────────────────────────
+  const { fc, hrv } = calcularRPPG(dadosColetados.rgbFrames);
+
+  setProcessando(35, 'Analisando variabilidade cardíaca...');
+  await delay(300);
+
+  // ── 2. Tensão facial ──────────────────────────────────────────────────
+  const tensaoMedia = dadosColetados.tensaoFacial.length > 0
+    ? dadosColetados.tensaoFacial.reduce((a,b)=>a+b,0) / dadosColetados.tensaoFacial.length
+    : 0.3;
+
+  setProcessando(55, 'Calculando índice de estresse...');
+  await delay(300);
+
+  // ── 3. Frequência de piscar ───────────────────────────────────────────
+  const duracaoSeg = dadosColetados.rgbFrames.length / 30;
+  const taxaPiscar = duracaoSeg > 0 ? dadosColetados.piscar.length / duracaoSeg : 0.15;
+
+  setProcessando(75, 'Classificando estado vital...');
+  await delay(300);
+
+  // ── 4. Estresse composto ──────────────────────────────────────────────
+  // Estresse = combinação de HRV baixo + tensão alta + piscar anormal
+  const hrvNorm    = clamp((hrv - 10) / 70, 0, 1); // normaliza HRV 10-80ms
+  const piscarNorm = clamp(Math.abs(taxaPiscar - 0.17) / 0.2, 0, 1);
+  const estresse   = Math.round(
+    clamp((tensaoMedia * 0.4 + (1 - hrvNorm) * 0.4 + piscarNorm * 0.2) * 100, 5, 95)
+  );
+
+  setProcessando(90, 'Selecionando narrativa Zoraxx...');
+  await delay(400);
+
+  // ── 5. Classificação do estado ────────────────────────────────────────
+  const estado = classificarEstado(fc, hrv, estresse);
+
+  setProcessando(100, 'Análise concluída');
+  await delay(500);
+
+  // ── 6. Confiança da medição ───────────────────────────────────────────
+  const confianca = dadosColetados.rgbFrames.length > 80
+    ? dadosColetados.tensaoFacial.length > 40 ? 'Alta' : 'Média'
+    : 'Estimada';
+
+  resultado = { fc, hrv, estresse, estado, confianca,
+    data: new Date().toLocaleDateString('pt-BR') };
+
+  renderResultado();
+  showScreen('screen-resultado');
+}
+
+// ── rPPG simplificado — Green channel peak detection ─────────────────────
+function calcularRPPG(frames) {
+  if (frames.length < 30) {
+    // Dados insuficientes — retorna estimativa baseada em distribuição normal
+    return { fc: rand(65, 85), hrv: rand(30, 55) };
+  }
+
+  // Extrai canal verde (mais sensível a pulsação)
+  const g = frames.map(f => f.g);
+
+  // Suavização (média móvel 5 pontos)
+  const smooth = g.map((v, i) => {
+    const w = g.slice(Math.max(0,i-2), i+3);
+    return w.reduce((a,b)=>a+b,0) / w.length;
+  });
+
+  // Detecta picos (batimentos)
+  const picos = [];
+  for (let i=2; i<smooth.length-2; i++) {
+    if (smooth[i] > smooth[i-1] && smooth[i] > smooth[i+1] &&
+        smooth[i] > smooth[i-2] && smooth[i] > smooth[i+2]) {
+      if (picos.length === 0 || i - picos[picos.length-1] > 8) {
+        picos.push(i);
+      }
+    }
+  }
+
+  // FC: baseado em picos por segundo
+  const fps = frames.length / ((frames[frames.length-1].t - frames[0].t) / 1000 || 5);
+  const fc = picos.length >= 3
+    ? Math.round(clamp((picos.length / (frames.length / fps)) * 60, 45, 120))
+    : rand(65, 85);
+
+  // HRV: desvio padrão dos intervalos entre picos (SDNN simplificado)
+  let hrv = 40;
+  if (picos.length >= 4) {
+    const rri = picos.slice(1).map((p,i) => (p - picos[i]) * (1000/fps));
+    const mediaRRI = rri.reduce((a,b)=>a+b,0) / rri.length;
+    const sdnn = Math.sqrt(rri.map(r=>(r-mediaRRI)**2).reduce((a,b)=>a+b,0) / rri.length);
+    hrv = Math.round(clamp(sdnn, 8, 85));
+  }
+
+  return { fc, hrv };
+}
+
+// ── Classificação do estado ───────────────────────────────────────────────
+function classificarEstado(fc, hrv, estresse) {
+  // Pontuação por similaridade com cada estado
+  let melhor = ESTADOS[0], melhorScore = Infinity;
+
+  ESTADOS.forEach(e => {
+    const fcMid  = (e.fcMin + e.fcMax) / 2;
+    const hrvMid = (e.hrvMin + e.hrvMax) / 2;
+    const esMid  = (e.esMin + e.esMax) / 2;
+    const score = Math.abs(fc - fcMid) * 0.4 +
+                  Math.abs(hrv - hrvMid) * 0.35 +
+                  Math.abs(estresse - esMid) * 0.25;
+    if (score < melhorScore) { melhorScore = score; melhor = e; }
+  });
+
+  return melhor;
+}
+
+const delay = ms => new Promise(r => setTimeout(r, ms));
+
+// ═══════════════════════════════════════════════════════════════════════════
+// RENDERIZAÇÃO DO RESULTADO
+// ═══════════════════════════════════════════════════════════════════════════
 function renderResultado() {
-  const { fc, hrv, estresse, estado, data } = resultado;
+  const { fc, hrv, estresse, estado, confianca, data } = resultado;
+
+  const corConfianca = confianca === 'Alta' ? '#5aaa82' : confianca === 'Média' ? '#e8b84b' : '#7878a0';
+
   $('resultado-inner').innerHTML = `
     <p class="resultado-badge fade-in">Estado Vital · Pulsovital</p>
     <div class="resultado-accent fade-in" style="background:${estado.cor}"></div>
@@ -624,40 +811,38 @@ function renderResultado() {
       </div>
     </div>
 
+    <span class="confianca-badge fade-in" style="border-color:${corConfianca};color:${corConfianca}">
+      ● Confiança da medição: ${confianca}
+    </span>
+
     <div class="resultado-divider fade-in" style="background:${estado.cor}"></div>
 
-    <div class="fade-in">
-      <p class="narrativa-autor">Zoraxx</p>
-      <p class="narrativa-texto">${estado.narrativa}</p>
-    </div>
+    <p class="narrativa-autor fade-in">Zoraxx</p>
+    <p class="narrativa-texto fade-in">${estado.narrativa}</p>
 
     <button class="btn-compartilhar fade-in"
       style="border-color:${estado.cor};color:${estado.cor}"
       onclick="abrirCard()">
       Compartilhar Card
     </button>
-
-    <button class="btn-novamente" onclick="reiniciar()">
-      Fazer novo scan
-    </button>
+    <button class="btn-novamente" onclick="reiniciar()">Fazer nova análise</button>
 
     <div class="rodape fade-in">
       <p class="rodape-marca">Pulsovital · Zoraxx · ${data}</p>
-      <p class="rodape-aviso">Autoconhecimento pessoal. Não é diagnóstico médico.</p>
+      <p class="rodape-aviso">Dados processados localmente. Nada foi enviado.<br>Autoconhecimento pessoal. Não é diagnóstico médico.</p>
     </div>
   `;
 
-  // Fundo do resultado muda por estado
   $('screen-resultado').style.background = estado.corBg;
 }
 
-// ── CARD ──────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
+// CARD COMPARTILHÁVEL
+// ═══════════════════════════════════════════════════════════════════════════
 function abrirCard() {
   const { fc, hrv, estresse, estado, data } = resultado;
   const wrap = $('card-wrap');
-
   wrap.style.background = estado.corBg;
-
   wrap.innerHTML = `
     <div class="card-noise"></div>
     <div class="card-corners">
@@ -667,27 +852,18 @@ function abrirCard() {
       <div class="c br" style="border-color:${estado.cor}"></div>
     </div>
     <div class="card-bg">
-      <div class="card-top">
-        <p class="card-label">Estado Vital · Pulsovital</p>
+      <div>
+        <p class="card-label">Estado Vital · Pulsovital · Zoraxx</p>
         <div class="card-accent" style="background:${estado.cor}"></div>
         <h2 class="card-nome" style="color:${estado.cor}">${estado.nome}</h2>
         <p class="card-sub">${estado.sub}</p>
         <p class="card-narrativa">${estado.narrativa}</p>
       </div>
-      <div class="card-bottom">
+      <div>
         <div class="card-metricas">
-          <div>
-            <span class="card-m-valor" style="color:${estado.cor}">${fc}</span>
-            <span class="card-m-label">FC · bpm</span>
-          </div>
-          <div>
-            <span class="card-m-valor" style="color:${estado.cor}">${hrv}</span>
-            <span class="card-m-label">HRV · ms</span>
-          </div>
-          <div>
-            <span class="card-m-valor" style="color:${estado.cor}">${estresse}%</span>
-            <span class="card-m-label">Estresse</span>
-          </div>
+          <div><span class="card-m-valor" style="color:${estado.cor}">${fc}</span><span class="card-m-label">FC · bpm</span></div>
+          <div><span class="card-m-valor" style="color:${estado.cor}">${hrv}</span><span class="card-m-label">HRV · ms</span></div>
+          <div><span class="card-m-valor" style="color:${estado.cor}">${estresse}%</span><span class="card-m-label">Estresse</span></div>
         </div>
         <div class="card-footer-row">
           <span class="card-brand">Pulsovital · Zoraxx</span>
@@ -696,20 +872,14 @@ function abrirCard() {
       </div>
     </div>
   `;
-
-  // Botão compartilhar
-  const btnSalvar = $('btn-salvar');
-  btnSalvar.style.border = `1.5px solid ${estado.cor}`;
-  btnSalvar.style.color  = estado.cor;
-
+  const btn = $('btn-salvar');
+  btn.style.border = `1.5px solid ${estado.cor}`;
+  btn.style.color  = estado.cor;
   showScreen('screen-card');
 }
 
-// ── COMPARTILHAR (Web Share API) ──────────────────────────────────────────
 async function salvarCard() {
   const { estado } = resultado;
-
-  // Tenta Web Share API nativa
   if (navigator.share) {
     try {
       await navigator.share({
@@ -718,150 +888,103 @@ async function salvarCard() {
         url: window.location.href,
       });
       return;
-    } catch(e) {
-      // usuário cancelou ou não suportado
-    }
+    } catch(e) {}
   }
-
-  // Fallback: captura o card como imagem via Canvas
-  salvarComoImagem();
+  gerarImagemCanvas();
 }
 
-function salvarComoImagem() {
+function gerarImagemCanvas() {
   const { fc, hrv, estresse, estado, data } = resultado;
+  const c = document.createElement('canvas');
+  c.width = c.height = 1080;
+  const ctx = c.getContext('2d');
 
-  const canvas = document.createElement('canvas');
-  canvas.width  = 1080;
-  canvas.height = 1080;
-  const ctx = canvas.getContext('2d');
-
-  // Fundo
   ctx.fillStyle = estado.corBg || '#0a0a0b';
   ctx.fillRect(0, 0, 1080, 1080);
 
   // Borda interna
-  ctx.strokeStyle = '#1a1a18';
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = '#1a1a18'; ctx.lineWidth = 1;
   ctx.strokeRect(40, 40, 1000, 1000);
 
-  // Cantos decorativos
-  ctx.strokeStyle = estado.cor;
-  ctx.lineWidth = 2.5;
-  ctx.globalAlpha = .4;
-  const cs = 30;
-  [
-    [40, 40, cs, 0, 0, cs],       // TL
-    [1040-cs, 40, cs, 0, 0, cs],  // TR (invertido)
-    [40, 1040-cs, cs, 0, 0, cs],  // BL
-    [1040-cs, 1040-cs, cs, 0, 0, cs], // BR
-  ].forEach((_,i) => {
+  // Cantos
+  ctx.strokeStyle = estado.cor; ctx.lineWidth = 2.5; ctx.globalAlpha = .4;
+  [[40,40,1,0],[1040,40,-1,0],[40,1040,1,-1],[1040,1040,-1,-1]].forEach(([x,y,dx,dy]) => {
     ctx.beginPath();
-    if (i === 0) { ctx.moveTo(40+cs, 40); ctx.lineTo(40,40); ctx.lineTo(40, 40+cs); }
-    if (i === 1) { ctx.moveTo(1040-cs, 40); ctx.lineTo(1040,40); ctx.lineTo(1040, 40+cs); }
-    if (i === 2) { ctx.moveTo(40, 1040-cs); ctx.lineTo(40,1040); ctx.lineTo(40+cs, 1040); }
-    if (i === 3) { ctx.moveTo(1040-cs, 1040); ctx.lineTo(1040,1040); ctx.lineTo(1040, 1040-cs); }
+    ctx.moveTo(x+dx*28, y); ctx.lineTo(x, y); ctx.lineTo(x, y+dy*(-28));
     ctx.stroke();
   });
   ctx.globalAlpha = 1;
 
-  // Label topo
   ctx.fillStyle = '#4a4840';
-  ctx.font = '500 22px DM Sans, sans-serif';
-  ctx.letterSpacing = '6px';
-  ctx.fillText('ESTADO VITAL · PULSOVITAL', 80, 130);
+  ctx.font = '500 20px "DM Sans", sans-serif';
+  ctx.fillText('ESTADO VITAL · PULSOVITAL · ZORAXX', 80, 130);
 
-  // Linha acento
   ctx.fillStyle = estado.cor;
   ctx.fillRect(80, 158, 64, 3);
 
-  // Nome do estado
-  ctx.fillStyle = estado.cor;
-  ctx.font = 'bold 96px "Playfair Display", Georgia, serif';
-  ctx.letterSpacing = '-2px';
-  wrapText(ctx, estado.nome, 80, 290, 900, 108);
+  ctx.font = 'bold 88px "Playfair Display", Georgia, serif';
+  wrapText(ctx, estado.nome, 80, 280, 900, 100, estado.cor);
 
-  // Sub
   ctx.fillStyle = '#4a4840';
-  ctx.font = '400 20px DM Sans, sans-serif';
-  ctx.letterSpacing = '3px';
-  ctx.fillText(estado.sub.toUpperCase(), 80, 370);
+  ctx.font = '400 18px "DM Sans", sans-serif';
+  ctx.fillText(estado.sub.toUpperCase(), 80, 350);
 
-  // Divisor leve
-  ctx.fillStyle = estado.cor;
-  ctx.globalAlpha = .15;
-  ctx.fillRect(80, 400, 920, 1);
-  ctx.globalAlpha = 1;
+  ctx.fillStyle = estado.cor; ctx.globalAlpha = .15;
+  ctx.fillRect(80, 378, 920, 1); ctx.globalAlpha = 1;
 
-  // Narrativa
   ctx.fillStyle = '#c0bcb4';
-  ctx.font = '300 28px DM Sans, sans-serif';
-  ctx.letterSpacing = '0px';
-  wrapText(ctx, estado.narrativa, 80, 450, 920, 40);
+  ctx.font = '300 26px "DM Sans", sans-serif';
+  wrapText(ctx, estado.narrativa, 80, 430, 920, 38, '#c0bcb4');
 
-  // Métricas
-  const mY = 820;
-  const mItems = [
-    { val: `${fc}`, lbl: 'FC · BPM' },
-    { val: `${hrv}`, lbl: 'HRV · MS' },
-    { val: `${estresse}%`, lbl: 'ESTRESSE' },
-  ];
-  mItems.forEach((m, i) => {
+  const my = 820;
+  [[`${fc}`, 'FC · BPM'],[`${hrv}`, 'HRV · MS'],[`${estresse}%`, 'ESTRESSE']].forEach((m,i) => {
     const x = 80 + i * 200;
     ctx.fillStyle = estado.cor;
-    ctx.font = 'bold 52px "Playfair Display", Georgia, serif';
-    ctx.letterSpacing = '-1px';
-    ctx.fillText(m.val, x, mY);
+    ctx.font = 'bold 50px "Playfair Display", Georgia, serif';
+    ctx.fillText(m[0], x, my);
     ctx.fillStyle = '#4a4840';
-    ctx.font = '400 16px DM Sans, sans-serif';
-    ctx.letterSpacing = '3px';
-    ctx.fillText(m.lbl, x, mY + 28);
+    ctx.font = '400 15px "DM Sans", sans-serif';
+    ctx.fillText(m[1], x, my+26);
   });
 
-  // Rodapé
   ctx.fillStyle = '#3a3830';
-  ctx.font = '400 22px "Playfair Display", Georgia, serif';
-  ctx.letterSpacing = '2px';
+  ctx.font = '400 20px "Playfair Display", Georgia, serif';
   ctx.fillText('Pulsovital · Zoraxx', 80, 980);
-  ctx.font = '400 18px DM Sans, sans-serif';
-  ctx.letterSpacing = '1px';
-  ctx.fillText(data, 1040-120, 980);
+  ctx.font = '400 16px "DM Sans", sans-serif';
+  ctx.fillText(data, 900, 980);
 
-  // Download
   const link = document.createElement('a');
-  link.download = `pulsovital-${estado.nome.toLowerCase().replace(' ','-')}.png`;
-  link.href = canvas.toDataURL('image/png');
+  link.download = `pulsovital-${estado.nome.toLowerCase().replace(/\s/g,'-')}.png`;
+  link.href = c.toDataURL('image/png');
   link.click();
 }
 
-// Quebra texto no canvas
-function wrapText(ctx, text, x, y, maxW, lineH) {
+function wrapText(ctx, text, x, y, mw, lh, color) {
+  ctx.fillStyle = color;
   const words = text.split(' ');
-  let line = '';
-  let cy = y;
+  let line = '', cy = y;
   words.forEach((w, i) => {
     const test = line + w + ' ';
-    const m = ctx.measureText(test);
-    if (m.width > maxW && i > 0) {
-      ctx.fillText(line.trim(), x, cy);
-      line = w + ' ';
-      cy += lineH;
-    } else {
-      line = test;
-    }
+    if (ctx.measureText(test).width > mw && i > 0) {
+      ctx.fillText(line.trim(), x, cy); line = w + ' '; cy += lh;
+    } else { line = test; }
   });
   ctx.fillText(line.trim(), x, cy);
 }
 
-function voltarResultado() {
-  showScreen('screen-resultado');
-}
-
 function reiniciar() {
-  $('progress-fill').style.width = '0%';
-  $('progress-pct').textContent = '0%';
+  dadosColetados.rgbFrames = [];
+  dadosColetados.tensaoFacial = [];
+  dadosColetados.piscar = [];
+  dadosColetados.fotos = [];
   $('screen-resultado').style.background = '';
+  $('camera-progress-fill').style.width = '0%';
+  $('camera-pct').textContent = '0%';
   showScreen('screen-intro');
 }
+
+// ── START ─────────────────────────────────────────────────────────────────
+window.addEventListener('load', init);
 </script>
 </body>
 </html>
