@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="pt-BR">
@@ -450,7 +449,7 @@ async function processarDados(){
   resultado={fc,hrv,estresse,estado,confianca,
     data:new Date().toLocaleDateString('pt-BR'),
     hora:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),
-    itens:gerarItens(fc,hrv,estresse,estado)
+    itens:gerarItens(fc,hrv,estresse,estado,confianca)
   };
   renderResultado();
   showScreen('screen-resultado');
@@ -490,7 +489,7 @@ function classificar(fc,hrv,es){
 // ═══════════════════════════════════════════════════════════════
 // GERAÇÃO DOS 33 ITENS DO RELATÓRIO
 // ═══════════════════════════════════════════════════════════════
-function gerarItens(fc,hrv,es,estado){
+function gerarItens(fc,hrv,es,estado,confianca){
   // Faixas ideais para adulto 30-50 anos
   const fcIdeal=[55,80],hrvIdeal=[30,70],esIdeal=[0,40];
   const ok='ok',no='no',na='na';
@@ -555,7 +554,7 @@ function gerarItens(fc,hrv,es,estado){
     {bloco:'Qualidade da Leitura',nome:'Qualidade do sinal rPPG',valor:`${qualSinal}%`,desc:'Baseada no volume e consistência dos frames captados',status:qualSinal>=70?ok:na,pct:qualSinal},
     {bloco:'Qualidade da Leitura',nome:'Estabilidade dos frames',valor:`${estabFrames}%`,desc:'Percentual de frames válidos na captação',status:estabFrames>=80?ok:na,pct:estabFrames},
     {bloco:'Qualidade da Leitura',nome:'Consistência da medição',valor:qualSinal>=80?'Alta':qualSinal>=60?'Média':'Baixa',desc:'Quanto maior, mais confiáveis os valores de FC e HRV',status:qualSinal>=70?ok:na,pct:qualSinal},
-    {bloco:'Qualidade da Leitura',nome:'Confiabilidade geral',valor:resultado?.confianca||'Estimada',desc:'Avaliação global da qualidade desta análise',status:qualSinal>=70?ok:na,pct:qualSinal},
+    {bloco:'Qualidade da Leitura',nome:'Confiabilidade geral',valor:confianca||'Estimada',desc:'Avaliação global da qualidade desta análise',status:qualSinal>=70?ok:na,pct:qualSinal},
 
     // BLOCO 6 — Contexto e Recomendação
     {bloco:'Contexto e Recomendação',nome:'Estado predominante',valor:estado.nome,desc:'Estado vital classificado pela análise biométrica',status:ok,pct:100},
