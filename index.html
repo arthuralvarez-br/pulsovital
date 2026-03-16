@@ -66,6 +66,23 @@ body{
 .cam-flash{position:absolute;inset:0;z-index:20;background:rgba(255,255,255,.85);pointer-events:none;animation:doFlash .35s ease forwards}
 @keyframes doFlash{0%{opacity:1}100%{opacity:0}}
 
+/* ── RECOMENDAÇÃO + SENTIMENTO + HISTÓRICO ── */
+.res-rec{margin:20px 28px 0;padding:16px;border-left:2px solid var(--amber-d);background:rgba(200,145,42,.05)}
+.res-rec-label{font-size:10px;letter-spacing:3px;color:var(--amber-d);text-transform:uppercase;margin-bottom:6px}
+.res-rec-texto{font-size:14px;color:var(--text-m);line-height:1.6}
+.sentimento-wrap{margin:20px 28px 0;padding:16px 0}
+.sentimento-label{font-size:12px;color:var(--text-d);letter-spacing:1px;margin-bottom:12px}
+.sentimento-opts{display:flex;gap:8px;flex-wrap:wrap}
+.sent-btn{background:transparent;border:1px solid var(--border);color:var(--text-m);font-size:13px;padding:8px 16px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:border-color .2s,color .2s}
+.sent-btn:active,.sent-btn:hover{border-color:var(--amber);color:var(--amber)}
+.sentimento-ok{font-size:13px;color:var(--text-m);padding:8px 0}
+.hist-resumo{margin:20px 28px 0;padding:16px;border:1px solid var(--border);border-radius:2px}
+.hist-label{font-size:10px;letter-spacing:3px;color:var(--text-d);text-transform:uppercase;margin-bottom:10px}
+.hist-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)}
+.hist-row:last-child{border-bottom:none}
+.hist-key{font-size:12px;color:var(--text-d)}
+.hist-val{font-size:12px;color:var(--text-m);font-weight:500}
+
 /* ── PROCESSANDO ── */
 #screen-processando{align-items:center;justify-content:center;padding:48px 40px;gap:32px;text-align:center;background:var(--bg)}
 .proc-logo{font-family:'Playfair Display',serif;font-size:34px;color:var(--text-d);letter-spacing:2px}
@@ -270,14 +287,13 @@ position:relative;overflow:hidden;flex-shrink:0;
         <div class="land-badge">Beta Tester · Acesso Aberto</div>
         <h1 class="land-title">Pulso<br>vital</h1>
         <div class="land-line"></div>
-        <p class="land-sub">Bem-estar.<br>Autoconhecimento.<br>Prevenção.</p>
-        <p class="land-desc">Você sabe como está de verdade? Não o que acha. O que seu corpo está sinalizando agora — antes que o cansaço vire algo maior.</p>
-        <p class="land-desc">O Pulsovital usa a câmera do seu celular para medir seu nível de estresse e bem-estar em cerca de 20 segundos. Sem nenhum aparelho extra. Só você e a tela.</p>
+        <p class="land-sub">Seu corpo já sabe que você está no limite,<br>antes de você admitir.</p>
+        <p class="land-desc">Faça uma leitura rápida de estresse e recuperação em cerca de 20 segundos usando apenas a câmera do celular. Sem nenhum aparelho extra.</p>
         <div class="land-scroll-hint">↓ &nbsp; role para entender como funciona</div>
       </div>
       <button class="btn-scan" onclick="irParaLead()" style="margin-top:32px">
-        <span class="btn-scan-main">Quero Testar</span>
-        <span class="btn-scan-sub">Gratuito · Fase Beta · Acesso aberto</span>
+        <span class="btn-scan-main">Faça sua leitura agora</span>
+        <span class="btn-scan-sub">Gratuito · leva cerca de 20 segundos</span>
       </button>
     </div>
 
@@ -363,9 +379,10 @@ position:relative;overflow:hidden;flex-shrink:0;
     <div class="land-section">
       <p class="land-section-label">Base Científica</p>
       <h2 class="land-section-title">A ciência por trás do Pulsovital.</h2>
-      <p class="land-sci-intro">O Pulsovital é baseado em duas áreas de pesquisa com décadas de estudos publicados: a <strong>fotopletismografia remota (rPPG)</strong> e a <strong>variabilidade da frequência cardíaca (VFC)</strong>. Abaixo, algumas das referências que fundamentam a metodologia. Todos os estudos são de acesso aberto ao público.</p>
+      <p class="land-sci-intro">O Pulsovital utiliza <strong>fotopletismografia remota (rPPG)</strong> — técnica estudada em pesquisa biomédica para estimar sinais fisiológicos a partir de variações de cor na pele captadas pela câmera. A base científica inclui estudos publicados em periódicos internacionais de acesso aberto.</p>
+      <button onclick="toggleRefs()" id="btn-toggle-refs" style="background:transparent;border:1px solid var(--amber-d);color:var(--amber-d);font-size:11px;letter-spacing:2px;padding:8px 16px;border-radius:2px;cursor:pointer;margin-bottom:16px;font-family:'DM Sans',sans-serif">VER BASE CIENTÍFICA ▼</button>
 
-      <div class="land-refs">
+      <div class="land-refs" id="land-refs-container" style="display:none">
 
         <div class="land-ref">
           <p class="land-ref-journal">Sensors · MDPI · 2024 · Acesso aberto</p>
@@ -399,7 +416,7 @@ position:relative;overflow:hidden;flex-shrink:0;
           <a class="land-ref-link" href="https://www.ahajournals.org/doi/10.1161/JAHA.120.017172" target="_blank" rel="noopener">ahajournals.org/doi/10.1161/JAHA.120.017172 ↗</a>
         </div>
 
-      </div>
+      </div><!-- /land-refs-container -->
 
       <div class="land-aviso-legal">
         <p><strong>Sobre os indicadores do Pulsovital:</strong> Os resultados apresentados são baseados em metodologia validada na literatura científica internacional. No entanto, trata-se de uma ferramenta de autoconhecimento e bem-estar pessoal &mdash; <strong>não substitui avaliação clínica</strong> realizada por profissional de saúde habilitado. Todos os dados são processados localmente no seu dispositivo. Nada é enviado ou armazenado.</p>
@@ -411,8 +428,8 @@ position:relative;overflow:hidden;flex-shrink:0;
       <p class="land-cta-title">Pronto para se ouvir?</p>
       <p class="land-cta-sub">Fase Beta · Acesso gratuito e aberto ao público</p>
       <button class="btn-scan" onclick="irParaLead()">
-        <span class="btn-scan-main">Iniciar Análise</span>
-        <span class="btn-scan-sub">Boa iluminação · cerca de 20 segundos</span>
+        <span class="btn-scan-main">Faça sua leitura agora</span>
+        <span class="btn-scan-sub">Boa iluminação · leva cerca de 20 segundos</span>
       </button>
       <p style="font-size:11px;color:var(--text-d);margin-top:20px;letter-spacing:1px">Pulsovital · Arthur Alvarez · Beta</p>
     </div>
@@ -684,6 +701,7 @@ async function processarDados(){
     hora:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),
     itens:gerarItens(fc,hrv,estresse,estado,confianca)
   };
+  salvarHistorico(resultado);
   renderResultado();
   showScreen('screen-resultado');
 }
@@ -828,6 +846,12 @@ function renderResultado(){
     <div class="res-divider" style="background:${estado.cor}"></div>
     <p class="nar-autor">Arthur Alvarez</p>
     <p class="nar-texto">${estado.narrativa}</p>
+    <div class="res-rec">
+      <p class="res-rec-label">Para agora</p>
+      <p class="res-rec-texto">${obterRecomendacao(estado,fc,hrv,estresse)}</p>
+    </div>
+    ${renderSentimento()}
+    ${renderHistoricoResumo()}
     <div class="res-actions">
       <button class="btn-primary" style="border-color:${estado.cor};color:${estado.cor}" onclick="abrirCard()">Ver Card</button>
       <button class="btn-secondary" onclick="abrirRelatorio()">📋 Relatório Completo (33 itens)</button>
@@ -1205,6 +1229,100 @@ function reiniciar(){
 rppgBuf.length=0;frameIdx=0;fotosTiradas=0;
 $('screen-resultado').style.background='';
 showScreen('screen-landing');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HISTÓRICO LOCAL
+// ═══════════════════════════════════════════════════════════════
+function salvarHistorico(r){
+  try{
+    let h=JSON.parse(localStorage.getItem('pulsovital_history')||'[]');
+    h.unshift({date:r.data,hora:r.hora,state:r.estado.nome,stateId:r.estado.id,fc:r.fc,hrv:r.hrv,estresse:r.estresse,sentimento:null});
+    if(h.length>30)h=h.slice(0,30);
+    localStorage.setItem('pulsovital_history',JSON.stringify(h));
+  }catch(e){}
+}
+
+function obterHistorico(){
+  try{return JSON.parse(localStorage.getItem('pulsovital_history')||'[]');}catch(e){return[];}
+}
+
+function renderHistoricoResumo(){
+  const h=obterHistorico();
+  if(h.length<2)return '';
+  const hoje=h[0];
+  const ontem=h[1];
+  const ultimos=h.slice(0,7);
+  const mediaEs=Math.round(ultimos.reduce((a,b)=>a+b.estresse,0)/ultimos.length);
+  const tendencia=mediaEs<40?'Estável e equilibrada':mediaEs<60?'Atenção moderada':'Sobrecarga frequente';
+  return `
+    <div class="hist-resumo">
+      <p class="hist-label">Seu histórico</p>
+      <div class="hist-row"><span class="hist-key">Hoje</span><span class="hist-val">${hoje.state}</span></div>
+      <div class="hist-row"><span class="hist-key">Anterior</span><span class="hist-val">${ontem.state}</span></div>
+      ${ultimos.length>=3?`<div class="hist-row"><span class="hist-key">Tendência (${ultimos.length} leituras)</span><span class="hist-val">${tendencia}</span></div>`:''}
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MICRO RECOMENDAÇÕES
+// ═══════════════════════════════════════════════════════════════
+function obterRecomendacao(estado,fc,hrv,es){
+  const id=estado.id;
+  const recs={
+    1:['Faça uma pausa real agora — mesmo que curta.','Respire lentamente por 5 minutos antes da próxima tarefa exigente.','Evite decisões importantes nas próximas horas se possível.'],
+    2:['Reabastece antes de precisar — uma pausa de 10 minutos pode mudar o restante do dia.','Hidrate-se e faça uma pausa ativa.','Seu ritmo está alto. Monitore como você estará à noite.'],
+    3:['A ansiedade que não aparece por fora ainda precisa de atenção.','Nomeie o que está pesando. Escrever ajuda.','Considere uma conversa ou uma caminhada curta.'],
+    4:['O que está pesando tanto assim hoje? Vale nomear.','Antes que o mental vire físico: uma pausa intencional agora.','Movimento leve — uma caminhada de 15 minutos pode aliviar a tensão acumulada.'],
+    5:['Ótimo estado para foco e decisões importantes.','Aproveite para as tarefas que exigem mais de você.','Compartilhe essa energia com quem está ao seu redor.'],
+    6:['Você está equilibrado. Mantenha o ritmo.','Bom momento para tarefas que exigem presença e atenção.','Não deixe o alerta virar pressão — uma pausa preventiva é válida.'],
+    7:['Estado ideal. Bom momento para decisões estratégicas.','Anote como chegou aqui — vale repetir.','Aproveite para conexões e conversas importantes.'],
+    8:['Seu corpo está se recuperando. Deixa ele trabalhar.','Evite estímulos intensos agora — você está em modo de restauração.','Sono de qualidade esta noite vai amplificar essa recuperação.'],
+    9:['Isso não é cansaço de um dia — é esgotamento acumulado.','Cuidado real, não só descanso: considere conversar com alguém de confiança.','Reduza compromissos não essenciais hoje.'],
+    10:['Dias mais lentos têm valor. Não force o ritmo.','Bom momento para tarefas criativas ou reflexivas.','Respeite esse ritmo — forçar pode custar mais do que parece.'],
+    11:['Estado raro. O que você vai fazer com ele hoje?','Ótimo para projetos que exigem vitalidade e criatividade.','Registre esse estado — é referência para o que funciona para você.'],
+    12:['Você está respondendo bem à pressão. Continue assim.','Resiliência se constrói — o que você fez diferente hoje?','Bom momento para tarefas exigentes que você estava adiando.'],
+  };
+  const lista=recs[id]||recs[6];
+  return lista[Math.floor(Math.random()*lista.length)];
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PERGUNTA SUBJETIVA PÓS-RESULTADO
+// ═══════════════════════════════════════════════════════════════
+function renderSentimento(){
+  return `
+    <div class="sentimento-wrap" id="sentimento-wrap">
+      <p class="sentimento-label">Como você se sente agora?</p>
+      <div class="sentimento-opts">
+        <button class="sent-btn" onclick="registrarSentimento('calmo')">Calmo</button>
+        <button class="sent-btn" onclick="registrarSentimento('tenso')">Tenso</button>
+        <button class="sent-btn" onclick="registrarSentimento('cansado')">Cansado</button>
+        <button class="sent-btn" onclick="registrarSentimento('bem')">Bem</button>
+      </div>
+    </div>
+  `;
+}
+
+function registrarSentimento(s){
+  try{
+    const h=JSON.parse(localStorage.getItem('pulsovital_history')||'[]');
+    if(h.length>0){h[0].sentimento=s;localStorage.setItem('pulsovital_history',JSON.stringify(h));}
+  }catch(e){}
+  const w=document.getElementById('sentimento-wrap');
+  if(w)w.innerHTML=`<p class="sentimento-ok">Registrado: <strong>${s}</strong> — obrigado.</p>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TOGGLE BASE CIENTÍFICA
+// ═══════════════════════════════════════════════════════════════
+function toggleRefs(){
+  const c=document.getElementById('land-refs-container');
+  const b=document.getElementById('btn-toggle-refs');
+  if(!c||!b)return;
+  if(c.style.display==='none'){c.style.display='block';b.textContent='OCULTAR BASE CIENTÍFICA ▲';}
+  else{c.style.display='none';b.textContent='VER BASE CIENTÍFICA ▼';}
 }
 
 // ═══════════════════════════════════════════════════════════════
