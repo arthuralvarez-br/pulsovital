@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Pulsovital">
-<title>Pulsovital · Zoraxx</title>
+<title>Pulsovital · Arthur Alvarez</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -561,7 +561,7 @@ function gerarItens(fc,hrv,es,estado,confianca){
     {bloco:'Contexto e Recomendação',nome:'Estado predominante',valor:estado.nome,desc:'Estado vital classificado pela análise biométrica',status:ok,pct:100},
     {bloco:'Contexto e Recomendação',nome:'Alinhamento com perfil adulto 30-50',valor:adereFc&&adereHrv?'Alinhado':adereFc||adereHrv?'Parcial':'Fora da faixa',desc:'Comparação com faixas de referência para a faixa etária',status:adereFc&&adereHrv?ok:adereFc||adereHrv?na:no,pct:((adereFc?50:0)+(adereHrv?50:0))},
     {bloco:'Contexto e Recomendação',nome:'Urgência de atenção',valor:es>70||hrv<20?'Alta':es>45||hrv<30?'Moderada':'Baixa',desc:'Nível de atenção recomendado com base nos indicadores',status:es<=45&&hrv>=25?ok:es>70?no:na,pct:clamp(100-es+hrv/2,10,100)},
-    {bloco:'Contexto e Recomendação',nome:'Recomendação de ação',valor:'Ver narrativa Zoraxx',desc:estado.narrativa.substring(0,80)+'...',status:na,pct:100},
+    {bloco:'Contexto e Recomendação',nome:'Recomendação de ação',valor:'Ver narrativa Arthur Alvarez',desc:estado.narrativa.substring(0,80)+'...',status:na,pct:100},
   ];
 }
 
@@ -594,7 +594,7 @@ function renderResultado(){
     </div>
     <span class="conf-badge" style="border-color:${cConf};color:${cConf}">● Qualidade da leitura: ${confianca}</span>
     <div class="res-divider" style="background:${estado.cor}"></div>
-    <p class="nar-autor">Zoraxx</p>
+    <p class="nar-autor">Arthur Alvarez</p>
     <p class="nar-texto">${estado.narrativa}</p>
     <div class="res-actions">
       <button class="btn-primary" style="border-color:${estado.cor};color:${estado.cor}" onclick="abrirCard()">Ver Card</button>
@@ -602,7 +602,7 @@ function renderResultado(){
       <button class="btn-ghost" onclick="reiniciar()">Fazer nova análise</button>
     </div>
     <div class="rodape">
-      <p class="rodape-marca">Pulsovital · Zoraxx · ${data} ${hora}</p>
+      <p class="rodape-marca">Pulsovital · Arthur Alvarez · ${data} ${hora}</p>
       <p class="rodape-aviso">Dados processados localmente. Nada enviado.<br>Autoconhecimento pessoal. Não é diagnóstico médico.</p>
     </div>
   `;
@@ -652,7 +652,7 @@ function abrirCard(){
       ${cornerHTML}
       <div class="card-content">
         <div>
-          <p class="cp1-label">Estado Vital · Pulsovital · Zoraxx</p>
+          <p class="cp1-label">Estado Vital · Pulsovital · Arthur Alvarez</p>
           <div class="cp1-acc" style="background:${estado.cor}"></div>
           <h2 class="cp1-nome" style="color:${estado.cor}">${estado.nome}</h2>
           <p class="cp1-sub">${estado.sub}</p>
@@ -665,7 +665,7 @@ function abrirCard(){
             <div><span class="cp1-mv" style="color:${estado.cor}">${estresse}%</span><span class="cp1-ml">Estresse</span></div>
           </div>
           <div class="cp1-foot">
-            <span class="cp1-brand">Pulsovital · Zoraxx</span>
+            <span class="cp1-brand">Pulsovital · Arthur Alvarez</span>
             <span class="cp1-data">${data}</span>
           </div>
         </div>
@@ -687,7 +687,7 @@ function abrirCard(){
             <span>📋 Ver relatório completo (33 itens)</span>
           </div>
           <div class="cp1-foot" style="margin-top:10px">
-            <span class="cp1-brand">Pulsovital · Zoraxx</span>
+            <span class="cp1-brand">Pulsovital · Arthur Alvarez</span>
             <span class="cp1-data">${data} ${hora}</span>
           </div>
         </div>
@@ -801,7 +801,7 @@ function abrirRelatorio(){
         medicamentos ou qualquer condição de saúde devem sempre consultar um profissional habilitado.<br><br>
         Todos os dados são <strong>processados localmente no dispositivo do usuário</strong>.
         Nenhuma informação é transmitida, armazenada ou compartilhada com terceiros.
-        Pulsovital · Zoraxx © ${new Date().getFullYear()}
+        Pulsovital · Arthur Alvarez © ${new Date().getFullYear()}
       </p>
     </div>
 
@@ -821,7 +821,7 @@ async function salvarCard(){
     try{
       await navigator.share({
         title:`Pulsovital · ${estado.nome}`,
-        text:`Meu estado vital hoje: ${estado.nome}\n\n"${estado.narrativa}"\n\nPulsovital · Zoraxx`,
+        text:`Meu estado vital hoje: ${estado.nome}\n\n"${estado.narrativa}"\n\nPulsovital · Arthur Alvarez`,
         url:window.location.href
       });
       return;
@@ -886,7 +886,7 @@ function gerarPNG(){
 
   // Rodapé
   cx.fillStyle='#3a3830';cx.font='400 20px Georgia,serif';
-  cx.fillText('Pulsovital · Zoraxx',80,1310);cx.fillText(data,900,1310);
+  cx.fillText('Pulsovital · Arthur Alvarez',80,1310);cx.fillText(data,900,1310);
 
   const a=document.createElement('a');
   a.download=`pulsovital-${estado.nome.toLowerCase().replace(/\s+/g,'-')}.png`;
@@ -937,7 +937,7 @@ function gerarPDF(){
     <p style="font-size:11px;letter-spacing:2px;color:#6a6860;margin:4px 0 0;text-transform:uppercase">${estado.sub}</p>
   </div>
   <p style="margin-bottom:4px"><strong>FC:</strong> ${fc} bpm &nbsp;·&nbsp; <strong>HRV:</strong> ${hrv} ms &nbsp;·&nbsp; <strong>Estresse:</strong> ${estresse}% &nbsp;·&nbsp; <strong>Leitura:</strong> ${confianca}</p>
-  <h2 style="color:${estado.cor}">Narrativa Zoraxx</h2>
+  <h2 style="color:${estado.cor}">Narrativa Arthur Alvarez</h2>
   <p style="font-style:italic;color:#c0bcb4">${estado.narrativa}</p>
   <h2>33 Indicadores</h2>
   ${blocosHTML}
@@ -945,7 +945,7 @@ function gerarPDF(){
   <p>O Pulsovital utiliza rPPG (remote photoplethysmography) — detecção de variações de cor na pele captadas pela câmera frontal. FC estimada por picos no sinal verde normalizado. HRV calculado pelo SDNN simplificado dos intervalos entre picos. Índice de estresse composto pelo HRV normalizado e variância do sinal. Qualidade desta análise: <strong>${confianca}</strong> (${rppgBuf.length} frames).</p>
   <h2>Aviso Legal</h2>
   <p>Esta é uma ferramenta de autoconhecimento pessoal. Não constitui diagnóstico médico, laudo clínico ou prescrição. Não substitui consulta com profissional de saúde habilitado. Dados processados localmente — nada é transmitido ou armazenado.</p>
-  <div class="footer"><p>Pulsovital · Zoraxx © ${new Date().getFullYear()} &nbsp;·&nbsp; ${window.location.href}</p></div>
+  <div class="footer"><p>Pulsovital · Arthur Alvarez © ${new Date().getFullYear()} &nbsp;·&nbsp; ${window.location.href}</p></div>
   </body></html>`;
 
 const blob=new Blob([html],{type:'text/html'});
