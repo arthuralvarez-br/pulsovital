@@ -190,31 +190,202 @@ position:relative;overflow:hidden;flex-shrink:0;
 .rel-aviso-legal p{font-size:11px;color:var(--text-d);line-height:1.7}
 .btn-pdf{display:block;width:100%;border:1.5px solid var(--amber);border-radius:2px;padding:18px;text-align:center;background:transparent;cursor:pointer;font-size:12px;letter-spacing:4px;font-weight:600;text-transform:uppercase;color:var(--amber);font-family:'DM Sans',sans-serif;-webkit-appearance:none;margin-top:8px}
 .btn-pdf:active{opacity:.7}
+
+/* ── LANDING PAGE ── */
+#screen-landing{background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease}
+#screen-landing.active{opacity:1;pointer-events:all}
+.land-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:max(52px,env(safe-area-inset-top,20px)) 32px 40px}
+.land-hero-top{display:flex;flex-direction:column;justify-content:center;flex:1}
+.land-badge{display:inline-block;border:1px solid var(--amber-d);padding:5px 12px;border-radius:2px;font-size:10px;letter-spacing:4px;color:var(--amber-d);text-transform:uppercase;margin-bottom:28px;font-family:'Playfair Display',serif}
+.land-title{font-family:'Playfair Display',serif;font-size:72px;font-weight:700;line-height:1.0;color:var(--text);margin-bottom:20px}
+.land-line{width:48px;height:2px;background:var(--amber);margin-bottom:24px}
+.land-sub{font-size:22px;font-weight:300;color:var(--text-m);line-height:1.6;margin-bottom:20px}
+.land-desc{font-size:15px;color:var(--text-d);line-height:1.7;margin-bottom:12px}
+.land-scroll-hint{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-d);letter-spacing:2px;margin-top:8px;animation:pulse-hint 2s ease-in-out infinite}
+@keyframes pulse-hint{0%,100%{opacity:.4}50%{opacity:1}}
+.land-section{padding:60px 32px;border-top:1px solid var(--border)}
+.land-section-label{font-size:10px;letter-spacing:4px;color:var(--amber-d);text-transform:uppercase;margin-bottom:16px}
+.land-section-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:20px}
+.land-section-text{font-size:15px;color:var(--text-d);line-height:1.8;margin-bottom:16px}
+.land-steps{display:flex;flex-direction:column;gap:20px;margin:24px 0}
+.land-step{display:flex;gap:16px;align-items:flex-start}
+.land-step-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--amber);line-height:1;flex-shrink:0;width:36px}
+.land-step-body{flex:1}
+.land-step-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px}
+.land-step-desc{font-size:13px;color:var(--text-d);line-height:1.6}
+.land-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
+.land-feat{border:1px solid var(--border);border-radius:4px;padding:16px 14px}
+.land-feat-icon{font-size:20px;margin-bottom:8px}
+.land-feat-title{font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px}
+.land-feat-desc{font-size:11px;color:var(--text-d);line-height:1.5}
+.land-quote{border-left:2px solid var(--amber);padding:16px 20px;margin:24px 0}
+.land-quote-text{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:var(--text-m);line-height:1.6}
+.land-cta{padding:48px 32px max(48px,env(safe-area-inset-bottom,24px));border-top:1px solid var(--border);text-align:center}
+.land-cta-title{font-family:'Playfair Display',serif;font-size:28px;color:var(--text);margin-bottom:8px}
+.land-cta-sub{font-size:14px;color:var(--text-d);margin-bottom:28px}
+.land-aviso{border-left:2px solid var(--amber-d);padding-left:14px;margin-top:20px}
+.land-aviso p{font-size:12px;color:var(--text-d);line-height:1.6}
+
+/* ── LEAD FORM ── */
+#screen-lead{padding:0 32px 40px;justify-content:space-between;background:var(--bg)}
+.lead-top{flex:1;padding-top:max(52px,env(safe-area-inset-top,20px));display:flex;flex-direction:column;justify-content:center}
+.lead-badge{display:inline-block;border:1px solid var(--amber);padding:5px 14px;border-radius:2px;font-size:10px;letter-spacing:4px;color:var(--amber);text-transform:uppercase;margin-bottom:28px;font-family:'Playfair Display',serif}
+.lead-title{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;line-height:1.15;color:var(--text);margin-bottom:12px}
+.lead-sub{font-size:15px;color:var(--text-m);line-height:1.7;margin-bottom:32px}
+.lead-form{display:flex;flex-direction:column;gap:14px;margin-bottom:20px}
+.lead-field{display:flex;flex-direction:column;gap:6px}
+.lead-label{font-size:10px;letter-spacing:3px;color:var(--text-d);text-transform:uppercase}
+.lead-input{background:transparent;border:1px solid var(--border);border-radius:2px;padding:16px 14px;font-size:16px;color:var(--text);font-family:'DM Sans',sans-serif;-webkit-appearance:none;outline:none;transition:border-color .2s}
+.lead-input:focus{border-color:var(--amber)}
+.lead-input::placeholder{color:var(--text-d)}
+.lead-skip{display:block;width:100%;padding:14px;text-align:center;background:transparent;border:none;font-size:12px;color:var(--text-d);letter-spacing:2px;font-family:'DM Sans',sans-serif;cursor:pointer;-webkit-appearance:none;margin-top:4px}
+.lead-aviso{font-size:11px;color:var(--text-d);line-height:1.6;text-align:center;margin-top:8px}
+.lead-sending{display:none;text-align:center;padding:20px 0;font-size:13px;color:var(--amber-d);letter-spacing:2px}
 </style>
 
 </head>
 <body>
 <div id="app">
 
-  <!-- INTRO -->
+  <!-- LANDING PAGE -->
+  <div id="screen-landing" class="screen active">
 
-  <div id="screen-intro" class="screen active">
-    <div class="intro-top">
-      <div class="badge">Arthur Alvarez</div>
-      <h1 class="intro-title">Pulso<br>vital</h1>
-      <div class="intro-line"></div>
-      <p class="intro-sub">Autoconhecimento.<br>Bem-estar. Em tempo real.</p>
-      <p class="intro-desc">Pulsovital usa a câmera frontal do seu dispositivo para medir frequência cardíaca, variabilidade e nível de estresse — e traduz esses dados em uma leitura clara do seu estado físico e emocional agora.</p>
-      <p class="intro-desc" style="margin-top:-12px">Sem wearables. Sem cadastro. Tudo processado localmente, em segundos.</p>
-      <div class="intro-aviso">
-        <p>Uma ferramenta de autoconhecimento e bem-estar pessoal.<br>Não substitui avaliação médica. Nada é enviado ou armazenado.</p>
+    <!-- DOBRA 1: Hero -->
+    <div class="land-hero">
+      <div class="land-hero-top">
+        <div class="land-badge">Beta Tester · Acesso Aberto</div>
+        <h1 class="land-title">Pulso<br>vital</h1>
+        <div class="land-line"></div>
+        <p class="land-sub">Autoconhecimento.<br>Bem-estar. Em tempo real.</p>
+        <p class="land-desc">Você sabe como está seu corpo agora? Não o que você acha — o que ele está dizendo de verdade.</p>
+        <p class="land-desc">Pulsovital mede sua frequência cardíaca, variabilidade e nível de estresse usando apenas a câmera do seu celular — e traduz isso em palavras que fazem sentido.</p>
+        <div class="land-scroll-hint">↓ &nbsp; role para entender como funciona</div>
+      </div>
+      <button class="btn-scan" onclick="irParaLead()" style="margin-top:32px">
+        <span class="btn-scan-main">Quero Testar</span>
+        <span class="btn-scan-sub">Gratuito · Sem cadastro obrigatório</span>
+      </button>
+    </div>
+
+    <!-- DOBRA 2: O que é -->
+    <div class="land-section">
+      <p class="land-section-label">O que é o Pulsovital</p>
+      <h2 class="land-section-title">Seu estado físico e emocional, em segundos.</h2>
+      <p class="land-section-text">Pulsovital usa uma tecnologia chamada <strong style="color:var(--text)">rPPG</strong> — fotopletismografia remota — para detectar variações sutis de cor na sua pele causadas pelo fluxo sanguíneo. Tudo pela câmera frontal. Sem nenhum aparelho.</p>
+      <p class="land-section-text">Em cerca de 20 segundos, você recebe uma leitura do seu estado vital: frequência cardíaca, variabilidade (HRV) e índice de estresse. E uma narrativa que traduz esses números em algo que você realmente entende.</p>
+      <div class="land-quote">
+        <p class="land-quote-text">"Não é um diagnóstico. É um espelho. Uma forma de se ouvir antes que o corpo precise gritar."</p>
       </div>
     </div>
-    <button class="btn-scan" id="btn-iniciar" onclick="iniciarCamera()">
-      <span class="btn-scan-main">Iniciar Análise</span>
-      <span class="btn-scan-sub">Boa iluminação · ~20 segundos</span>
-    </button>
+
+    <!-- DOBRA 3: Como funciona -->
+    <div class="land-section">
+      <p class="land-section-label">Como funciona</p>
+      <h2 class="land-section-title">Simples. Rápido. Sem wearables.</h2>
+      <div class="land-steps">
+        <div class="land-step">
+          <span class="land-step-num">1</span>
+          <div class="land-step-body">
+            <p class="land-step-title">Abra o app</p>
+            <p class="land-step-desc">Nenhum download. Funciona direto no navegador do celular ou computador.</p>
+          </div>
+        </div>
+        <div class="land-step">
+          <span class="land-step-num">2</span>
+          <div class="land-step-body">
+            <p class="land-step-title">Permita a câmera</p>
+            <p class="land-step-desc">Posicione seu rosto no oval. Boa iluminação. Fique quieto por ~20 segundos.</p>
+          </div>
+        </div>
+        <div class="land-step">
+          <span class="land-step-num">3</span>
+          <div class="land-step-body">
+            <p class="land-step-title">Receba sua leitura</p>
+            <p class="land-step-desc">FC, HRV, estresse e um texto personalizado sobre seu estado agora.</p>
+          </div>
+        </div>
+        <div class="land-step">
+          <span class="land-step-num">4</span>
+          <div class="land-step-body">
+            <p class="land-step-title">Explore os detalhes</p>
+            <p class="land-step-desc">33 indicadores biométricos, card para compartilhar e relatório completo em PDF.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOBRA 4: Diferenciais -->
+    <div class="land-section">
+      <p class="land-section-label">Por que usar</p>
+      <h2 class="land-section-title">Feito para quem quer se conhecer melhor.</h2>
+      <div class="land-features">
+        <div class="land-feat">
+          <div class="land-feat-icon">📷</div>
+          <p class="land-feat-title">Só a câmera</p>
+          <p class="land-feat-desc">Sem pulseira, sem sensor, sem app instalado.</p>
+        </div>
+        <div class="land-feat">
+          <div class="land-feat-icon">🔒</div>
+          <p class="land-feat-title">100% privado</p>
+          <p class="land-feat-desc">Tudo processado no seu dispositivo. Nada é enviado.</p>
+        </div>
+        <div class="land-feat">
+          <div class="land-feat-icon">⚡</div>
+          <p class="land-feat-title">20 segundos</p>
+          <p class="land-feat-desc">Leitura rápida, resultado imediato e completo.</p>
+        </div>
+        <div class="land-feat">
+          <div class="land-feat-icon">🧠</div>
+          <p class="land-feat-title">33 indicadores</p>
+          <p class="land-feat-desc">Cardiovascular, SNA, estresse, energia e mais.</p>
+        </div>
+      </div>
+      <div class="land-aviso">
+        <p>Ferramenta de autoconhecimento e bem-estar pessoal. Não substitui avaliação médica. Nada é armazenado ou compartilhado.</p>
+      </div>
+    </div>
+
+    <!-- DOBRA 5: CTA final -->
+    <div class="land-cta">
+      <p class="land-cta-title">Pronto para se ouvir?</p>
+      <p class="land-cta-sub">Fase Beta · Acesso gratuito e aberto ao público</p>
+      <button class="btn-scan" onclick="irParaLead()">
+        <span class="btn-scan-main">Iniciar Análise</span>
+        <span class="btn-scan-sub">Boa iluminação · ~20 segundos</span>
+      </button>
+      <p style="font-size:11px;color:var(--text-d);margin-top:20px;letter-spacing:1px">Pulsovital · Arthur Alvarez · Beta</p>
+    </div>
+
   </div>
+
+  <!-- LEAD FORM -->
+  <div id="screen-lead" class="screen">
+    <div class="lead-top">
+      <div class="lead-badge">Beta Tester</div>
+      <h2 class="lead-title">Antes de começar,<br>deixe seu contato.</h2>
+      <p class="lead-sub">Você está entre os primeiros a testar o Pulsovital. Seu feedback é valioso. Deixe seu WhatsApp ou e-mail para que Arthur Alvarez possa entrar em contato.</p>
+      <div class="lead-form" id="lead-form">
+        <div class="lead-field">
+          <label class="lead-label">WhatsApp</label>
+          <input class="lead-input" id="lead-whatsapp" type="tel" placeholder="(11) 99999-9999" inputmode="tel">
+        </div>
+        <div class="lead-field">
+          <label class="lead-label">E-mail</label>
+          <input class="lead-input" id="lead-email" type="email" placeholder="seu@email.com" inputmode="email">
+        </div>
+      </div>
+      <div class="lead-sending" id="lead-sending">Registrando...</div>
+      <button class="btn-scan" id="btn-lead-confirmar" onclick="confirmarLead()">
+        <span class="btn-scan-main">Confirmar e Iniciar</span>
+        <span class="btn-scan-sub">Seus dados ficam apenas com Arthur Alvarez</span>
+      </button>
+      <button class="lead-skip" onclick="iniciarCamera()">Pular e iniciar sem informar</button>
+      <p class="lead-aviso">Nenhum dado de saúde é coletado aqui. Apenas contato para feedback do beta.</p>
+    </div>
+  </div>
+
+  <!-- INTRO (mantida para compatibilidade interna) -->
+  <div id="screen-intro" class="screen" style="display:none"></div>>
 
   <!-- CÂMERA -->
 
@@ -344,8 +515,8 @@ const delay=ms=>new Promise(r=>setTimeout(r,ms));
 
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  $(id).classList.add('active');
-  try{$(id).scrollTop=0}catch(e){}
+  const el=$(id);
+  if(el){el.classList.add('active');el.style.display='';try{el.scrollTop=0}catch(e){}}
 }
 function setProc(pct,step){
   $('proc-fill').style.width=pct+'%';
@@ -972,7 +1143,43 @@ cx.fillText(line.trim(),x,cy);
 function reiniciar(){
 rppgBuf.length=0;frameIdx=0;fotosTiradas=0;
 $('screen-resultado').style.background='';
-showScreen('screen-intro');
+showScreen('screen-landing');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LEAD CAPTURE
+// ═══════════════════════════════════════════════════════════════
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzQ8JFHdvs7gXaaC-hyjFGj7HjaP5wBikitNBH1qBuFJo7ZBVzrOdLvr8w7bPzxkm6o/exec';
+
+function irParaLead(){
+  showScreen('screen-lead');
+  setTimeout(()=>{
+    const inp=document.getElementById('lead-whatsapp');
+    if(inp)inp.focus();
+  },400);
+}
+
+async function confirmarLead(){
+  const wa=(document.getElementById('lead-whatsapp').value||'').trim();
+  const em=(document.getElementById('lead-email').value||'').trim();
+  // Envia em background sem bloquear o usuario
+  if(wa||em){
+    const btn=document.getElementById('btn-lead-confirmar');
+    const sending=document.getElementById('lead-sending');
+    btn.style.opacity='0.5';
+    sending.style.display='block';
+    try{
+      const dispositivo=navigator.userAgent.includes('iPhone')?'iPhone':navigator.userAgent.includes('Android')?'Android':navigator.userAgent.includes('iPad')?'iPad':'Desktop';
+      fetch(SCRIPT_URL,{
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({nome:'',whatsapp:wa,email:em,dispositivo:dispositivo})
+      }).catch(()=>{});
+    }catch(e){}
+  }
+  // Vai direto para a camera sem esperar resposta
+  iniciarCamera();
 }
 </script>
 
