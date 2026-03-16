@@ -20,7 +20,7 @@
 html{height:100%}
 body{
   height:100%;background:var(--bg);color:var(--text);
-  font-family:'DM Sans',sans-serif;overflow:hidden;
+  font-family:'DM Sans',sans-serif;
   -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
   -webkit-text-size-adjust:100%;
 }
@@ -28,7 +28,7 @@ body{
 .screen{
   position:absolute;inset:0;display:flex;flex-direction:column;
   opacity:0;pointer-events:none;transition:opacity .45s ease;
-  overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+  overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;
 }
 .screen.active{opacity:1;pointer-events:all}
 
@@ -42,7 +42,7 @@ body{
 .intro-desc{font-size:13px;color:var(–text-d);line-height:1.7;margin-bottom:28px}
 .intro-aviso{border-left:2px solid var(–amber-d);padding-left:14px}
 .intro-aviso p{font-size:11px;color:var(–text-d);line-height:1.6}
-.btn-scan{display:block;width:100%;border:1.5px solid var(–amber);border-radius:2px;padding:20px;text-align:center;background:transparent;cursor:pointer;-webkit-appearance:none;margin-top:32px}
+.btn-scan{display:block;width:100%;border:1.5px solid var(–amber);border-radius:2px;padding:20px;text-align:center;background:transparent;cursor:pointer;-webkit-appearance:none;margin-top:32px;touch-action:manipulation;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
 .btn-scan:active{background:rgba(200,145,42,.08)}
 .btn-scan-main{display:block;font-size:13px;letter-spacing:4px;color:var(–amber);font-weight:600;text-transform:uppercase}
 .btn-scan-sub{display:block;font-size:11px;color:var(–amber-d);margin-top:6px;letter-spacing:1px}
@@ -209,7 +209,7 @@ position:relative;overflow:hidden;flex-shrink:0;
         <p>Autoconhecimento pessoal. Não substitui avaliação médica.<br>Tudo processado no seu dispositivo. Nada é enviado.</p>
       </div>
     </div>
-    <button class="btn-scan" onclick="iniciarCamera()">
+    <button class="btn-scan" id="btn-iniciar" onclick="iniciarCamera()">
       <span class="btn-scan-main">Iniciar Análise</span>
       <span class="btn-scan-sub">Boa iluminação · ~20 segundos</span>
     </button>
@@ -967,6 +967,17 @@ else line=t;
 });
 cx.fillText(line.trim(),x,cy);
 }
+
+// iOS Safari fallback — garante que o toque dispara mesmo em overflow:auto
+document.addEventListener(‘DOMContentLoaded’, function(){
+const btn = document.getElementById(‘btn-iniciar’);
+if(btn){
+btn.addEventListener(‘touchend’, function(e){
+e.preventDefault();
+iniciarCamera();
+}, {passive:false});
+}
+});
 
 function reiniciar(){
 rppgBuf.length=0;frameIdx=0;fotosTiradas=0;
