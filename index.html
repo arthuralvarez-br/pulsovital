@@ -20,7 +20,7 @@
 html{height:100%}
 body{
   height:100%;background:var(--bg);color:var(--text);
-  font-family:'DM Sans',sans-serif;
+  font-family:'DM Sans',sans-serif;overflow:hidden;
   -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
   -webkit-text-size-adjust:100%;
 }
@@ -28,12 +28,12 @@ body{
 .screen{
   position:absolute;inset:0;display:flex;flex-direction:column;
   opacity:0;pointer-events:none;transition:opacity .45s ease;
-  overflow:hidden;
+  overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
 }
 .screen.active{opacity:1;pointer-events:all}
 
 /* ── INTRO ── */
-#screen-intro{padding:0 32px 40px;justify-content:space-between;background:var(–bg);overflow:hidden}
+#screen-intro{padding:0 32px 40px;justify-content:space-between;background:var(–bg)}
 .intro-top{flex:1;padding-top:max(52px,env(safe-area-inset-top,20px));display:flex;flex-direction:column;justify-content:center}
 .badge{display:inline-block;border:1px solid var(–amber-d);padding:5px 12px;border-radius:2px;font-size:10px;letter-spacing:4px;color:var(–amber-d);text-transform:uppercase;margin-bottom:28px;font-family:‘Playfair Display’,serif}
 .intro-title{font-family:‘Playfair Display’,serif;font-size:72px;font-weight:700;line-height:1.0;color:var(–text);margin-bottom:20px}
@@ -42,7 +42,7 @@ body{
 .intro-desc{font-size:15px;color:var(–text-d);line-height:1.7;margin-bottom:28px}
 .intro-aviso{border-left:2px solid var(–amber-d);padding-left:14px}
 .intro-aviso p{font-size:13px;color:var(–text-d);line-height:1.6}
-.btn-scan{display:block;width:100%;border:1.5px solid var(–amber);border-radius:2px;padding:20px;text-align:center;background:transparent;cursor:pointer;-webkit-appearance:none;margin-top:32px;touch-action:manipulation;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+.btn-scan{display:block;width:100%;border:1.5px solid var(–amber);border-radius:2px;padding:20px;text-align:center;background:transparent;cursor:pointer;-webkit-appearance:none;appearance:none;margin-top:32px}
 .btn-scan:active{background:rgba(200,145,42,.08)}
 .btn-scan-main{display:block;font-size:15px;letter-spacing:4px;color:var(–amber);font-weight:600;text-transform:uppercase}
 .btn-scan-sub{display:block;font-size:13px;color:var(–amber-d);margin-top:6px;letter-spacing:1px}
@@ -79,7 +79,7 @@ body{
 .proc-pct{font-size:11px;color:var(–amber-d);letter-spacing:2px}
 
 /* ── RESULTADO ── */
-#screen-resultado{background:var(–bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+#screen-resultado{background:var(–bg)}
 .res-inner{padding:max(52px,env(safe-area-inset-top,20px)) 28px 48px;min-height:100%;display:flex;flex-direction:column}
 .res-badge{font-size:10px;letter-spacing:4px;color:var(–text-d);text-transform:uppercase;margin-bottom:14px}
 .res-line{width:40px;height:2px;margin-bottom:18px}
@@ -161,7 +161,7 @@ position:relative;overflow:hidden;flex-shrink:0;
 .card-swipe-hint{font-size:10px;color:var(–text-d);letter-spacing:2px;text-align:center}
 
 /* ── RELATÓRIO ── */
-#screen-relatorio{background:var(–bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+#screen-relatorio{background:var(–bg)}
 .rel-inner{padding:max(52px,env(safe-area-inset-top,20px)) 24px 60px;min-height:100%;display:flex;flex-direction:column;gap:0}
 .rel-header{margin-bottom:32px}
 .rel-back{font-size:11px;color:var(–text-d);letter-spacing:2px;cursor:pointer;background:none;border:none;font-family:‘DM Sans’,sans-serif;padding:0;-webkit-appearance:none;margin-bottom:20px;display:block}
@@ -209,7 +209,7 @@ position:relative;overflow:hidden;flex-shrink:0;
         <p>Autoconhecimento pessoal. Não substitui avaliação médica.<br>Tudo processado no seu dispositivo. Nada é enviado.</p>
       </div>
     </div>
-    <button class="btn-scan" id="btn-iniciar" ontouchstart="" onclick="iniciarCamera()">
+    <button class="btn-scan" id="btn-iniciar" onclick="iniciarCamera()">
       <span class="btn-scan-main">Iniciar Análise</span>
       <span class="btn-scan-sub">Boa iluminação · ~20 segundos</span>
     </button>
@@ -967,21 +967,6 @@ else line=t;
 });
 cx.fillText(line.trim(),x,cy);
 }
-
-// iOS Safari - múltiplos fallbacks para garantir o clique
-window.addEventListener(‘load’, function(){
-const btn = document.getElementById(‘btn-iniciar’);
-if(!btn) return;
-// Remove qualquer handler anterior
-btn.addEventListener(‘touchend’, function(e){
-e.preventDefault();
-e.stopPropagation();
-iniciarCamera();
-}, {passive:false});
-btn.addEventListener(‘pointerup’, function(e){
-iniciarCamera();
-});
-});
 
 function reiniciar(){
 rppgBuf.length=0;frameIdx=0;fotosTiradas=0;
