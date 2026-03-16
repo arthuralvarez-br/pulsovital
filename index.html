@@ -241,6 +241,20 @@ position:relative;overflow:hidden;flex-shrink:0;
 .lead-skip{display:block;width:100%;padding:14px;text-align:center;background:transparent;border:none;font-size:12px;color:var(--text-d);letter-spacing:2px;font-family:'DM Sans',sans-serif;cursor:pointer;-webkit-appearance:none;margin-top:4px}
 .lead-aviso{font-size:11px;color:var(--text-d);line-height:1.6;text-align:center;margin-top:8px}
 .lead-sending{display:none;text-align:center;padding:20px 0;font-size:13px;color:var(--amber-d);letter-spacing:2px}
+
+/* ── SEÇÃO CIENTÍFICA ── */
+.land-sci-intro{font-size:15px;color:var(--text-d);line-height:1.8;margin-bottom:20px}
+.land-sci-intro strong{color:var(--text)}
+.land-refs{display:flex;flex-direction:column;gap:12px;margin:24px 0}
+.land-ref{border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:0 4px 4px 0;padding:14px 16px}
+.land-ref-journal{font-size:9px;letter-spacing:3px;color:var(--amber-d);text-transform:uppercase;margin-bottom:6px}
+.land-ref-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:4px}
+.land-ref-authors{font-size:11px;color:var(--text-d);line-height:1.5;margin-bottom:6px}
+.land-ref-finding{font-size:12px;color:var(--text-m);line-height:1.6;font-style:italic;border-top:1px solid var(--border);padding-top:8px;margin-top:4px}
+.land-ref-link{display:inline-block;font-size:10px;color:var(--amber-d);letter-spacing:2px;margin-top:6px;text-decoration:none;border-bottom:1px solid var(--amber-d)}
+.land-aviso-legal{border:1px solid var(--amber-d);border-radius:4px;padding:16px 18px;margin-top:24px}
+.land-aviso-legal p{font-size:12px;color:var(--text-d);line-height:1.7}
+.land-aviso-legal strong{color:var(--text-m)}
 </style>
 
 </head>
@@ -345,7 +359,54 @@ position:relative;overflow:hidden;flex-shrink:0;
       </div>
     </div>
 
-    <!-- DOBRA 5: CTA final -->
+    <!-- DOBRA 5: Base Científica -->
+    <div class="land-section">
+      <p class="land-section-label">Base Científica</p>
+      <h2 class="land-section-title">A ciência por trás do Pulsovital.</h2>
+      <p class="land-sci-intro">O Pulsovital é baseado em duas áreas de pesquisa com décadas de estudos publicados: a <strong>fotopletismografia remota (rPPG)</strong> e a <strong>variabilidade da frequência cardíaca (VFC)</strong>. Abaixo, algumas das referências que fundamentam a metodologia. Todos os estudos são de acesso aberto ao público.</p>
+
+      <div class="land-refs">
+
+        <div class="land-ref">
+          <p class="land-ref-journal">Sensors · MDPI · 2024 · Acesso aberto</p>
+          <p class="land-ref-title">Enhancing Stress Detection: A Comprehensive Approach through rPPG Analysis and Deep Learning Techniques</p>
+          <p class="land-ref-authors">Fontes, L.; Machado, P.; Vinkemeier, D.; Yahaya, S.; Bird, J.J.; Ihianle, I.K. &mdash; Nottingham Trent University, Reino Unido</p>
+          <p class="land-ref-finding">&ldquo;O sistema proposto alcançou até 95,83% de acurácia na detecção de estresse a partir de vídeos faciais usando rPPG, sem nenhum sensor físico.&rdquo;</p>
+          <a class="land-ref-link" href="https://doi.org/10.3390/s24041096" target="_blank" rel="noopener">doi.org/10.3390/s24041096 ↗</a>
+        </div>
+
+        <div class="land-ref">
+          <p class="land-ref-journal">Bioengineering · MDPI · 2023 · Acesso aberto</p>
+          <p class="land-ref-title">Robust Heart Rate Variability Measurement from Facial Videos via Remote Photoplethysmography</p>
+          <p class="land-ref-authors">Odinaev, I. et al. &mdash; Estudo de validação do método rPPG para medição de VFC</p>
+          <p class="land-ref-finding">&ldquo;A fotopletismografia remota (rPPG) é um método sem contato que permite a detecção de sinais fisiológicos a partir de vídeos faciais, incluindo a variabilidade da frequência cardíaca.&rdquo;</p>
+          <a class="land-ref-link" href="https://doi.org/10.3390/bioengineering10070851" target="_blank" rel="noopener">doi.org/10.3390/bioengineering10070851 ↗</a>
+        </div>
+
+        <div class="land-ref">
+          <p class="land-ref-journal">PMC · National Institutes of Health (NIH) · 2018 · Acesso aberto</p>
+          <p class="land-ref-title">Stress and Heart Rate Variability: A Meta-Analysis and Review of the Literature</p>
+          <p class="land-ref-authors">Kim, H.G.; Cheon, E.J.; Bai, D.S.; Lee, Y.H.; Koo, B.H. &mdash; Revisão sistemática com meta-análise</p>
+          <p class="land-ref-finding">&ldquo;As evidências neurobiológicas atuais indicam que a VFC é impactada pelo estresse e suportam seu uso para a avaliação objetiva do estresse psicológico.&rdquo;</p>
+          <a class="land-ref-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5900369/" target="_blank" rel="noopener">pmc.ncbi.nlm.nih.gov/PMC5900369 ↗</a>
+        </div>
+
+        <div class="land-ref">
+          <p class="land-ref-journal">American Heart Association · JAHA · 2021 · Acesso aberto</p>
+          <p class="land-ref-title">Stress is Associated with Autonomic Dysfunction, as Measured by Decreased Heart Rate Variability</p>
+          <p class="land-ref-authors">The Atherosclerosis Risk in Communities Study &mdash; American Heart Association Journals</p>
+          <p class="land-ref-finding">&ldquo;O estresse está associado à disfunção autonômica, medida pela redução da variabilidade da frequência cardíaca (VFC).&rdquo;</p>
+          <a class="land-ref-link" href="https://www.ahajournals.org/doi/10.1161/JAHA.120.017172" target="_blank" rel="noopener">ahajournals.org/doi/10.1161/JAHA.120.017172 ↗</a>
+        </div>
+
+      </div>
+
+      <div class="land-aviso-legal">
+        <p><strong>Sobre os indicadores do Pulsovital:</strong> Os resultados apresentados são baseados em metodologia validada na literatura científica internacional. No entanto, trata-se de uma ferramenta de autoconhecimento e bem-estar pessoal &mdash; <strong>não substitui avaliação clínica</strong> realizada por profissional de saúde habilitado. Todos os dados são processados localmente no seu dispositivo. Nada é enviado ou armazenado.</p>
+      </div>
+    </div>
+
+    <!-- DOBRA 6: CTA final -->
     <div class="land-cta">
       <p class="land-cta-title">Pronto para se ouvir?</p>
       <p class="land-cta-sub">Fase Beta · Acesso gratuito e aberto ao público</p>
