@@ -811,7 +811,7 @@ function gerarItens(fc,hrv,es,estado,confianca){
     {bloco:'Contexto e Recomendação',nome:'Estado predominante',valor:estado.nome,desc:'Estado vital classificado pela análise biométrica',status:ok,pct:100},
     {bloco:'Contexto e Recomendação',nome:'Alinhamento com perfil adulto 30-50',valor:adereFc&&adereHrv?'Alinhado':adereFc||adereHrv?'Parcial':'Fora da faixa',desc:'Comparação com faixas de referência para a faixa etária',status:adereFc&&adereHrv?ok:adereFc||adereHrv?na:no,pct:((adereFc?50:0)+(adereHrv?50:0))},
     {bloco:'Contexto e Recomendação',nome:'Urgência de atenção',valor:es>70||hrv<20?'Alta':es>45||hrv<30?'Moderada':'Baixa',desc:'Nível de atenção recomendado com base nos indicadores',status:es<=45&&hrv>=25?ok:es>70?no:na,pct:clamp(100-es+hrv/2,10,100)},
-    {bloco:'Contexto e Recomendação',nome:'Recomendação de ação',valor:'Ver narrativa Arthur Alvarez',desc:estado.narrativa.substring(0,80)+'...',status:na,pct:100},
+    {bloco:'Contexto e Recomendação',nome:'Recomendação de ação',valor:'Ver Card',desc:estado.narrativa.substring(0,80)+'...',status:na,pct:100},
   ];
 }
 
