@@ -197,7 +197,7 @@ position:relative;overflow:hidden;flex-shrink:0;
 .rel-item-icon.na{background:rgba(74,120,184,.15);color:#4a7ab8}
 .rel-item-body{flex:1}
 .rel-item-name{font-size:13px;color:var(--text);margin-bottom:3px;font-weight:500}
-.rel-item-desc{font-size:11px;color:var(--text-d);line-height:1.5}
+.rel-item-desc{font-size:11px;color:#8a8680;line-height:1.5}
 .rel-item-valor{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;flex-shrink:0;text-align:right;margin-top:1px}
 .rel-metodologia{background:var(--border);border-radius:6px;padding:20px;margin-bottom:32px}
 .rel-metodologia h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--text);margin-bottom:10px}
@@ -1169,7 +1169,7 @@ function gerarPDF(){
           <div style="width:18px;height:18px;border-radius:50%;background:${item.status==='ok'?'rgba(90,170,130,.2)':item.status==='no'?'rgba(192,80,80,.2)':'rgba(74,120,184,.2)'};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:${item.status==='ok'?'#5aaa82':item.status==='no'?'#c05050':'#4a7ab8'};flex-shrink:0">${item.status==='ok'?'✓':item.status==='no'?'✗':'i'}</div>
           <div style="flex:1">
             <p style="font-size:12px;color:#e8e4dc;margin-bottom:2px">${item.nome}</p>
-            <p style="font-size:10px;color:#4a4840">${item.desc}</p>
+            <p style="font-size:11px;color:#8a8680">${item.desc}</p>
           </div>
           <span style="font-size:12px;font-weight:700;color:${item.status==='ok'?'#5aaa82':item.status==='no'?'#c05050':'#4a7ab8'};flex-shrink:0">${item.valor}</span>
         </div>
@@ -1187,7 +1187,7 @@ function gerarPDF(){
   </style></head><body>
 
   <h1 style="color:${estado.cor}">Pulsovital</h1>
-  <p style="color:#4a4840;letter-spacing:2px;font-size:11px">RELATÓRIO COMPLETO · ZORAXX · ${data} ${hora}</p>
+  <p style="color:#6a6860;letter-spacing:2px;font-size:11px">RELATÓRIO COMPLETO · PULSOVITAL · ${data} ${hora}</p>
   <div class="banner">
     <p style="font-size:22px;font-weight:700;color:${estado.cor};margin:0">${estado.nome}</p>
     <p style="font-size:11px;letter-spacing:2px;color:#6a6860;margin:4px 0 0;text-transform:uppercase">${estado.sub}</p>
@@ -1204,11 +1204,23 @@ function gerarPDF(){
   <div class="footer"><p>Pulsovital · Arthur Alvarez © ${new Date().getFullYear()} &nbsp;·&nbsp; ${window.location.href}</p></div>
   </body></html>`;
 
-const blob=new Blob([html],{type:'text/html'});
-const url=URL.createObjectURL(blob);
-const a=document.createElement('a');
-a.href=url;a.download=`pulsovital-relatorio-${data.replace(/\//g,'-')}.html`;
-a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+// Abre em nova janela e aciona impressao como PDF
+const win=window.open('','_blank');
+if(win){
+  win.document.write(html);
+  win.document.close();
+  win.onload=function(){
+    win.focus();
+    win.print();
+  };
+} else {
+  // Fallback: download HTML se popup bloqueado
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`pulsovital-relatorio-${data.replace(/\//g,'-')}.html`;
+  a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
 }
 
 // ═══════════════════════════════════════════════════════════════
